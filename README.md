@@ -20,7 +20,13 @@ git push
 
 ## 前端（client）
 
+运行方式：
+``` bash
+cnpm install
+cnpm run dev
+```
 
+到`localhost:8080`查看
 
 
 
