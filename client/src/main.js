@@ -17,7 +17,7 @@ import 'quill/dist/quill.snow.css'
 import 'quill/dist/quill.bubble.css'
 import 'nprogress/nprogress.css'
 
-axios.defaults.baseURL = 'http://127.0.0.1:8888/api/private/v1/'
+axios.defaults.baseURL = 'http://timemeetyou.com:8889/api/private/v1/'
 axios.interceptors.request.use(config => {
   // console.log(config)
   NProgress.start()

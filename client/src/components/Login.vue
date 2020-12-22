@@ -85,7 +85,7 @@ export default {
   width: 450px;
   height: 280px;
   background-color: #fff;
-  box-shadow: 0 0 10px #ddd;
+  box-shadow: 0 0 20px #555;
   border-radius: 30px;
   position: absolute;
   left: 50%;
