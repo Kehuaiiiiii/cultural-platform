@@ -1,6 +1,8 @@
 # cultural-platform
 njupt文创平台-订单管理系统
 
+## 环境搭建有问题群里call一下
+
 开始：
 ``` git
 git clone https://github.com/Kehuaiiiiii/cultural-platform.git
@@ -34,19 +36,17 @@ cnpm run dev
 
 推荐idea
 
-1、使用jdk1.8
-2、配置好maven（环境变量、setting、repository）
+- jdk1.8
+- maven（设置环境变量、setting、repository）
 
 maven阿里云源：
 ``` xml
-	<mirror>
-
-      <id>alimaven</id>
-      <mirrorOf>*</mirrorOf>
-      <name>aliyun maven</name>
-      <url>https://maven.aliyun.com/repository/public</url>
-      
-    </mirror>
+<mirror>
+	<id>alimaven</id>
+	<mirrorOf>*</mirrorOf>
+	<name>aliyun maven</name>
+	<url>https://maven.aliyun.com/repository/public</url>
+</mirror>
 ```
 
 统一一下mysql
