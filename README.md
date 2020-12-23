@@ -32,3 +32,25 @@ cnpm run dev
 
 ## 后端（server）
 
+推荐idea
+
+1、使用jdk1.8
+2、配置好maven（环境变量、setting、repository）
+
+maven阿里云源：
+``` xml
+	<mirror>
+
+      <id>alimaven</id>
+      <mirrorOf>*</mirrorOf>
+      <name>aliyun maven</name>
+      <url>https://maven.aliyun.com/repository/public</url>
+      
+    </mirror>
+```
+
+统一一下mysql
+url：localhost:3306
+数据库：cultural_platform
+账号：root
+密码：root
