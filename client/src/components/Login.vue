@@ -40,7 +40,7 @@ export default {
         // 验证用户名是否合法
         username:[
           { required:true, message:"请输入登录用户名", trigger:"blur" },
-          { min:3, max:10, message:"长度在3到10个字符中间", trigger:"blur" }
+          { min:3, max:15, message:"长度在3到15个字符中间", trigger:"blur" }
         ],
         // 验证密码是否合法
         password:[
@@ -60,8 +60,8 @@ export default {
       this.$refs.loginFormRef.validate(async valid => {
         if(!valid) return;
         // 发送请求
-        const {data: res} = await this.$http.get('admin/login',this.loginForm);
-        if(res.meta.status!==200) return this.$message.error('登陆失败');
+        const {data: res} = await this.$http.get('login',this.loginForm);
+        if(res.data.status!==200) return this.$message.error('登陆失败');
         this.$message.success('登陆成功')
         // 保存token
         window.sessionStorage.setItem('token', res.data.token);
