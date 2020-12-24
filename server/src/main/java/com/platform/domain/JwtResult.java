@@ -2,7 +2,18 @@ package com.platform.domain;
 
 public class JwtResult<T> {
     private Integer code; // 返回代码(200:成功)
-    private T data; // 返回的数据,正确的信息或错误描述信息
+    private T data; // 返回的数据
+    private String msg="";//返回提示信息
+
+    public String getMsg() {
+        return msg;
+    }
+
+    public void setMsg(String msg) {
+        this.msg = msg;
+    }
+
+
 
     public JwtResult() {
         super();

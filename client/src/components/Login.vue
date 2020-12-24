@@ -33,7 +33,7 @@ export default {
       // 登陆表单的数据绑定对象
       loginForm: {
         username:'admin',
-        password:'123456',
+        password:'123',
       },
       // 这是表单的验证规则对象
       loginFormRules: {
@@ -45,7 +45,7 @@ export default {
         // 验证密码是否合法
         password:[
           { required:true, message:"请输入登录密码", trigger:"blur" },
-          { min:6, max:15, message:"长度在6到15个字符中间", trigger:"blur" }
+          { min:3, max:15, message:"长度在6到15个字符中间", trigger:"blur" }
         ],
       }
     }
@@ -60,7 +60,7 @@ export default {
       this.$refs.loginFormRef.validate(async valid => {
         if(!valid) return;
         // 发送请求
-        const {data: res} = await this.$http.post('login',this.loginForm);
+        const {data: res} = await this.$http.get('admin/login',this.loginForm);
         if(res.meta.status!==200) return this.$message.error('登陆失败');
         this.$message.success('登陆成功')
         // 保存token

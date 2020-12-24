@@ -4,7 +4,7 @@ import com.platform.domain.Admin;
 
 
 public interface IAdminService {
-     Admin Login(String zh,String pwd);
+     Admin Login(String zh, String pwd);
 
      Boolean addAdmin(Admin admin);
 

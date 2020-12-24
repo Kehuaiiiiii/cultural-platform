@@ -1,11 +1,7 @@
 package com.platform.interceptor;
 
 import com.alibaba.fastjson.JSON;
-import com.platform.domain.JwtConst;
 import com.platform.domain.JwtResult;
-import com.platform.util.JwtUtil;
-import io.jsonwebtoken.Claims;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import javax.servlet.http.HttpServletRequest;
