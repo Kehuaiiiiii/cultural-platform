@@ -81,8 +81,8 @@ export default {
     // 获取请求菜单
     async getMenuList () {
       const { data: res } = await this.$http.get('menus')
-      if (res.meta.status !== 200) return this.$message.error(res.meta.msg)
-      this.menuList = res.data
+      if (res.data.status !== 200) return this.$message.error(res.data.msg)
+      this.menuList = res.data.data
       // console.log(res)
     },
     // 菜单的折叠与展开

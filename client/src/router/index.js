@@ -2,9 +2,12 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 
 // 路由懒加载
-const Login = () => import(/* webpackChunkName: "Login_Home_Welcome" */ '../components/Login.vue')
-const Home = () => import(/* webpackChunkName: "Login_Home_Welcome" */ '../components/Home.vue')
-const Welcome = () => import(/* webpackChunkName: "Login_Home_Welcome" */ '../components/Welcome.vue')
+const Login = () => import('../components/Login.vue')
+const Home = () => import('../components/Home.vue')
+const Welcome = () => import('../components/Welcome.vue')
+const GoodsList = () => import('../components/goods/List.vue')
+const GoodsSell = () => import('../components/goods/Sell.vue')
+const OrderList = () => import('../components/order/List.vue')
 
 Vue.use(VueRouter)
 
@@ -16,11 +19,18 @@ const routes = [
     redirect: '/Welcome',
     children: [
       { path: '/home', component: Welcome },
+      { path: '/goods', component: GoodsList },
+      { path: '/goods/list', component: GoodsList },
+      { path: '/goods/sell', component: GoodsSell },
+      { path: '/order', component: OrderList },
+      { path: '/order/list', component: OrderList },
+
     ] }
 
 ]
 
 const router = new VueRouter({
+  mode: 'history',
   routes
 })
 
