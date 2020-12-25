@@ -50,10 +50,10 @@ public class UserController {
     }
 
     @GetMapping("getMenu")
-    public JwtResult<ArrayList<Menu>> getMenu(String token){
-        Claims claims=JwtUtil.verifyAndGetClaimsByToken(token);
+    public JwtResult<ArrayList<Menu>> getMenu(int rid){
+        //Claims claims=JwtUtil.verifyAndGetClaimsByToken(token);
         JwtResult<ArrayList<Menu>> result = new JwtResult<>();
-        int rid=(int)claims.get("rid");
+        //int rid=(int)claims.get("rid");
         if(!StringUtils.isEmpty(userService.getMenu(rid))){
             result.setCode(200);
             result.setData(userService.getMenu(rid));
@@ -99,20 +99,5 @@ public class UserController {
         return null;
     }
 
-    @GetMapping("addOrder")
-    public Boolean addOrder(Orders orders){
-        return userService.addOrder(orders);
-    }
 
-    @GetMapping("updateOrder")
-    public Boolean updateOrder(Orders orders){
-        return userService.updateOrder(orders);
-    }
-
-    @GetMapping("getOrderInfo")
-    public List<Orders> getOrderInfo(Orders orders){
-        if(!StringUtils.isEmpty(userService.getOrderInfo(orders)))
-            return userService.getOrderInfo(orders);
-        return null;
-    }
 }

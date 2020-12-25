@@ -2,7 +2,6 @@ package com.platform.service;
 
 import com.platform.domain.Goods;
 import com.platform.domain.Menu;
-import com.platform.domain.Orders;
 import com.platform.domain.User;
 
 import java.util.ArrayList;
@@ -19,11 +18,7 @@ public interface IUserService {
 
     List<Goods> getAllGoods();
 
-    Boolean addOrder(Orders orders);
 
-    Boolean updateOrder(Orders orders);
-
-    List<Orders> getOrderInfo(Orders orders);
 
     ArrayList<Menu> getMenu(int rid);
 }

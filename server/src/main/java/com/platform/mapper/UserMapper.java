@@ -22,11 +22,7 @@ public interface UserMapper{
 
     List<Goods> getAllGoods();
 
-    Boolean addOrder(Orders orders);
 
-    Boolean updateOrder(Orders orders);
-
-    List<Orders> getOrderInfo(Orders orders);
 
 
 }

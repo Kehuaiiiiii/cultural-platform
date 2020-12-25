@@ -2,7 +2,6 @@ package com.platform.service.impl;
 
 import com.platform.domain.Goods;
 import com.platform.domain.Menu;
-import com.platform.domain.Orders;
 import com.platform.domain.User;
 import com.platform.mapper.MenuMapper;
 import com.platform.mapper.UserMapper;
@@ -11,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
-import javax.sound.midi.Soundbank;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -49,20 +47,7 @@ public class UserServiceImpl implements IUserService{
         return userMapper.getAllGoods();
     }
 
-    @Override
-    public Boolean addOrder(Orders orders) {
-        return userMapper.addOrder(orders);
-    }
 
-    @Override
-    public Boolean updateOrder(Orders orders) {
-        return userMapper.updateOrder(orders);
-    }
-
-    @Override
-    public List<Orders> getOrderInfo(Orders orders) {
-        return userMapper.getOrderInfo(orders);
-    }
 
     @Override
     public ArrayList<Menu> getMenu(int rid) {
@@ -75,6 +60,7 @@ public class UserServiceImpl implements IUserService{
             for (int i = 0; i < menu.size(); i++) {
                 if (menu.get(i).getPid()!=0){
                     int p=menu.get(i).getPid();
+                    menu.get(i).setPath(map.get(p).getAuthName());
                     ArrayList<Menu> list=map.get(p).getChildren()==null?new ArrayList<>():map.get(p).getChildren();
                     list.add(menu.get(i));
                     map.get(p).setChildren(list);

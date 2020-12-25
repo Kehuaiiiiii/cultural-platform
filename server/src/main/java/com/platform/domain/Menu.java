@@ -7,6 +7,16 @@ public class Menu {
     private int pid;        //菜单父类ID
     private String authName;    //菜单名称
     private int rid;        //权限ID
+    private String path;    //父类菜单名称
+
+    public String getPath() {
+        return path;
+    }
+
+    public void setPath(String path) {
+        this.path = path;
+    }
+
     private ArrayList<Menu> children; //子菜单
 
     public int getRid() {
