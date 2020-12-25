@@ -7,13 +7,13 @@ import io.jsonwebtoken.Claims;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -23,7 +23,7 @@ public class UserController {
     @Autowired
     private IUserService userService;
 
-    @GetMapping("login")
+    @PostMapping("login")
     public JwtResult<String> Login(HttpServletRequest request) {
         JwtResult<String> result = new JwtResult<>();
         String zh = request.getParameter("username");
@@ -50,10 +50,10 @@ public class UserController {
     }
 
     @GetMapping("getMenu")
-    public JwtResult<ArrayList<Menu>> getMenu(int rid){
-        //Claims claims=JwtUtil.verifyAndGetClaimsByToken(token);
+    public JwtResult<ArrayList<Menu>> getMenu(String token){
+        Claims claims=JwtUtil.verifyAndGetClaimsByToken(token);
         JwtResult<ArrayList<Menu>> result = new JwtResult<>();
-        //int rid=(int)claims.get("rid");
+        int rid=(int)claims.get("rid");
         if(!StringUtils.isEmpty(userService.getMenu(rid))){
             result.setCode(200);
             result.setData(userService.getMenu(rid));
@@ -92,12 +92,7 @@ public class UserController {
         return null;
     }
 
-    @GetMapping("getAllGoods")
-    public List<Goods> getAllGoods(){
-        if(!StringUtils.isEmpty(userService.getAllGoods()))
-            return userService.getAllGoods();
-        return null;
-    }
+
 
 
 }

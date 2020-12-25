@@ -16,9 +16,5 @@ public interface IUserService {
 
     User getUserInfo(User user);
 
-    List<Goods> getAllGoods();
-
-
-
     ArrayList<Menu> getMenu(int rid);
 }

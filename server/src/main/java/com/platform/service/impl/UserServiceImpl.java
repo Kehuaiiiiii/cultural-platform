@@ -42,10 +42,7 @@ public class UserServiceImpl implements IUserService{
         return userMapper.getUserInfo(user);
     }
 
-    @Override
-    public List<Goods> getAllGoods() {
-        return userMapper.getAllGoods();
-    }
+
 
 
 

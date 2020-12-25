@@ -13,6 +13,7 @@ public class Goods {
     private Date upd_time;    //更新时间
     private int version_id;   //更新版本
 
+
     public int getId() {
         return id;
     }
