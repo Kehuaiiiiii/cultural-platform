@@ -1,6 +1,6 @@
 package com.platform.mapper;
 
-import com.platform.domain.Orders;
+import com.platform.DAO.Orders;
 
 import java.util.List;
 

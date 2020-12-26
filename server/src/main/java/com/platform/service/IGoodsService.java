@@ -1,9 +1,6 @@
 package com.platform.service;
 
-import com.platform.domain.Goods;
-import com.platform.domain.GoodsInfo;
-
-import java.util.List;
+import com.platform.DAO.GoodsInfo;
 
 public interface IGoodsService {
     GoodsInfo getAllGoods(GoodsInfo goodsInfo);

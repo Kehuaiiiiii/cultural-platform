@@ -1,17 +1,14 @@
 package com.platform.controller;
 
-import com.platform.domain.Goods;
-import com.platform.domain.GoodsInfo;
-import com.platform.domain.JwtResult;
-import com.platform.domain.Menu;
+import com.platform.DAO.Goods;
+import com.platform.DAO.GoodsInfo;
+import com.platform.VO.HttpResult;
 import com.platform.service.IGoodsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
 
 
 @RestController
@@ -22,13 +19,13 @@ public class GoodsController {
     private IGoodsService goodsService;
 
     @GetMapping("getGoods")
-    public JwtResult<GoodsInfo> getGoods(GoodsInfo goodsInfo){
-        JwtResult<GoodsInfo> result = new JwtResult<>();
-        if(!StringUtils.isEmpty(goodsService.getAllGoods(goodsInfo))){
+    public HttpResult<GoodsInfo> getGoods(GoodsInfo goodsInfo) {
+        HttpResult<GoodsInfo> result = new HttpResult<>();
+        if (!StringUtils.isEmpty(goodsService.getAllGoods(goodsInfo))) {
             result.setCode(200);
             result.setData(goodsService.getAllGoods(goodsInfo));
             result.setMsg("请求成功");
-        }else{
+        } else {
             result.setCode(304);
             result.setMsg("请求失败");
         }
@@ -36,12 +33,12 @@ public class GoodsController {
     }
 
     @GetMapping("addGoods")
-    public JwtResult<String> addGoods(Goods goods){
-        JwtResult<String> result = new JwtResult<>();
-        if(1==1){//goodsService.addGoods(goods)
+    public HttpResult<String> addGoods(Goods goods) {
+        HttpResult<String> result = new HttpResult<>();
+        if (1 == 1) {//goodsService.addGoods(goods)
             result.setCode(200);
             result.setMsg("增加商品成功");
-        }else{
+        } else {
             result.setCode(304);
             result.setMsg("增加商品失败");
         }

@@ -1,4 +1,4 @@
-package com.platform.domain;
+package com.platform.DAO;
 
 import java.util.ArrayList;
 

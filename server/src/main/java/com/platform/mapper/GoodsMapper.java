@@ -1,7 +1,6 @@
 package com.platform.mapper;
 
-import com.platform.domain.Goods;
-import com.platform.domain.GoodsInfo;
+import com.platform.DAO.Goods;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;

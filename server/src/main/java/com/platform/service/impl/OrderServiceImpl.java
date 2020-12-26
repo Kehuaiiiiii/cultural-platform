@@ -1,6 +1,6 @@
 package com.platform.service.impl;
 
-import com.platform.domain.Orders;
+import com.platform.DAO.Orders;
 import com.platform.mapper.OrderMapper;
 import com.platform.service.IOrderService;
 import org.springframework.beans.factory.annotation.Autowired;

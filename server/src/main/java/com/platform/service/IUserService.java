@@ -1,14 +1,12 @@
 package com.platform.service;
 
-import com.platform.domain.Goods;
-import com.platform.domain.Menu;
-import com.platform.domain.User;
+import com.platform.DAO.Menu;
+import com.platform.DAO.User;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public interface IUserService {
-    User Login(String zh, String pwd);
+    User Login(String username, String password);
 
     Boolean addUser(User user);
 

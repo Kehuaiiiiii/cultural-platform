@@ -1,13 +1,11 @@
 package com.platform.service.impl;
 
-import com.platform.domain.Goods;
-import com.platform.domain.GoodsInfo;
+import com.platform.DAO.Goods;
+import com.platform.DAO.GoodsInfo;
 import com.platform.mapper.GoodsMapper;
 import com.platform.service.IGoodsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public class GoodsServiceImpl implements IGoodsService{

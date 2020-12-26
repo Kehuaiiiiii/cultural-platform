@@ -1,6 +1,6 @@
 package com.platform.mapper;
 
-import com.platform.domain.Menu;
+import com.platform.DAO.Menu;
 
 import java.util.ArrayList;
 

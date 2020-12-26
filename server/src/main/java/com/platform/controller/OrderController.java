@@ -1,6 +1,6 @@
 package com.platform.controller;
 
-import com.platform.domain.Orders;
+import com.platform.DAO.Orders;
 import com.platform.service.IOrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;

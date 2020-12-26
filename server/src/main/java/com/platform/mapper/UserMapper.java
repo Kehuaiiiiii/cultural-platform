@@ -1,28 +1,17 @@
 package com.platform.mapper;
 
-import com.platform.domain.Goods;
-import com.platform.domain.Menu;
-import com.platform.domain.Orders;
-import com.platform.domain.User;
+import com.platform.DAO.User;
 import org.apache.ibatis.annotations.Param;
-
-import java.util.ArrayList;
-import java.util.List;
 
 
 public interface UserMapper{
 
-    User login(@Param("zh") String zh, @Param("pwd") String pwd);
+    User login(@Param("username") String username, @Param("password") String password);
 
     Boolean addUser(User user);
 
     Boolean updateUser(User user);
 
     User getUserInfo(User user);
-
-
-
-
-
 
 }

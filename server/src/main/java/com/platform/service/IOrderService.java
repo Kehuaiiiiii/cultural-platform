@@ -1,6 +1,6 @@
 package com.platform.service;
 
-import com.platform.domain.Orders;
+import com.platform.DAO.Orders;
 
 import java.util.List;
 

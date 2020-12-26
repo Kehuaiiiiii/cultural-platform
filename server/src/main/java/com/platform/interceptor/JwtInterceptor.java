@@ -1,7 +1,7 @@
 package com.platform.interceptor;
 
 import com.alibaba.fastjson.JSON;
-import com.platform.domain.JwtResult;
+import com.platform.VO.HttpResult;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import javax.servlet.http.HttpServletRequest;
@@ -36,7 +36,7 @@ public class JwtInterceptor extends HandlerInterceptorAdapter{
      * 利用response直接输出错误信息
      */
     private void writerErrorMsg(Integer code, String msg, HttpServletResponse response) throws IOException {
-        JwtResult<String> result = new JwtResult<>();
+        HttpResult<String> result = new HttpResult<>();
         result.setCode(code);
         result.setData(msg);
         response.setContentType("application/json;charset=UTF-8");
