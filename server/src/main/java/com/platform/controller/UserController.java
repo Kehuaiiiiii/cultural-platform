@@ -4,18 +4,25 @@ import com.platform.VO.HttpResult;
 import com.platform.VO.LoginRequest;
 import com.platform.VO.LoginResponse;
 import com.platform.DAO.*;
+import com.platform.VO.MenuResponse;
 import com.platform.constant.HttpError;
 import com.platform.service.IUserService;
+import com.platform.util.HttpContextUtil;
 import com.platform.util.HttpResultUtil;
 import com.platform.util.JwtUtil;
+import io.jsonwebtoken.Claims;
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.xml.ws.spi.http.HttpContext;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 
@@ -53,20 +60,17 @@ public class UserController {
     }
 
     @GetMapping("getMenu")
-    public HttpResult<ArrayList<Menu>> getMenu(String token) {
-//        Claims claims = JwtUtil.verifyAndGetClaimsByToken(token);
-//        HttpResult<ArrayList<Menu>> result = new HttpResult<>();
-//        int rid = (int) claims.get("rid");
-//        if (!StringUtils.isEmpty(userService.getMenu(rid))) {
-//            result.setCode(200);
-//            result.setData(userService.getMenu(rid));
-//            result.setMsg("请求成功");
-//        } else {
-//            result.setCode(302);
-//            result.setMsg("请求失败");
-//        }
-//        return result;
-        return null;
+    public HttpResult<MenuResponse> getMenu(HttpServletRequest request) {
+        int rid = HttpContextUtil.getRid(request);
+        System.out.println("rid: " + rid);
+        List<Menu> menuList = userService.getMenu(rid);
+        if (CollectionUtils.isEmpty(menuList)) {
+            return HttpResultUtil.error(301, "未设置角色权限");
+        }
+        MenuResponse response = new MenuResponse();
+        response.setMenuList(menuList);
+
+        return HttpResultUtil.success(response);
     }
 
     @GetMapping("logout")

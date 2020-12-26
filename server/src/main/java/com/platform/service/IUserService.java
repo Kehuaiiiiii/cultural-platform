@@ -4,6 +4,7 @@ import com.platform.DAO.Menu;
 import com.platform.DAO.User;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public interface IUserService {
     User Login(String username, String password);
@@ -14,5 +15,5 @@ public interface IUserService {
 
     User getUserInfo(User user);
 
-    ArrayList<Menu> getMenu(int rid);
+    List<Menu> getMenu(int rid);
 }

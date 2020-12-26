@@ -15,8 +15,8 @@ public class CorsInterceptor implements Filter {
         response.setHeader("Access-Control-Allow-Methods", "POST, GET, PUT,OPTIONS, DELETE");
         response.setHeader("Access-Control-Max-Age", "3600");
         response.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization, X-Requested-With");
+        System.out.println("CorsInterceptor");
         chain.doFilter(req, res);
-        System.out.println("1111111111111111");
     }
     public void init(FilterConfig filterConfig) {}
     public void destroy() {}

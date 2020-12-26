@@ -1,62 +1,39 @@
 package com.platform.DAO;
 
-import java.util.ArrayList;
+import lombok.Data;
 
+import java.util.List;
+
+@Data
 public class Menu {
-    private int id;        //菜单ID
-    private int pid;        //菜单父类ID
-    private String authName;    //菜单名称
-    private int rid;        //权限ID
-    private String path;    //父类菜单名称
+    /**
+     * 菜单 id
+     */
+    private int id;
 
-    public String getPath() {
-        return path;
-    }
+    /**
+     * 父菜单 id
+     */
+    private int pid;
 
-    public void setPath(String path) {
-        this.path = path;
-    }
+    /**
+     * 对应角色 id
+     */
+    private int rid;
 
-    private ArrayList<Menu> children; //子菜单
+    /**
+     * 菜单名称
+     */
+    private String name;
 
-    public int getRid() {
-        return rid;
-    }
+    /**
+     * 路径
+     */
+    private String path;
 
-    public void setRid(int rid) {
-        this.rid = rid;
-    }
-
-    public ArrayList<Menu> getChildren() {
-        return children;
-    }
-
-    public void setChildren(ArrayList<Menu> children) {
-        this.children = children;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getAuthName() {
-        return authName;
-    }
-
-    public void setAuthName(String authName) {
-        this.authName = authName;
-    }
-
-    public int getPid() {
-        return pid;
-    }
-
-    public void setPid(int pid) {
-        this.pid = pid;
-    }
+    /**
+     * 子菜单
+     */
+    private List<Menu> children;
 
 }

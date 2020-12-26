@@ -13,9 +13,8 @@
       <!-- 侧边栏 -->
       <el-aside :width="isCollapse ? '64px' : '200px'">
         <div class="toggle-button" @click="togleCollapse">|||</div>
-        <el-menu unique-opened :collapse="isCollapse" :collapse-transition="false" router :default-active="activePath"
+        <el-menu :collapse="isCollapse" :collapse-transition="false" router :default-active="activePath"
                  background-color="#333744" text-color="#fff" active-text-color="#409FFF">
-          <!-- :unique-opened="true"->只允许展开一个菜单 -->
           <!-- :collapse-transition="false" -> 关闭动画 -->
           <!-- router -> 导航开启路由模式 -->
           <el-menu-item index="/home">
@@ -27,7 +26,7 @@
             <!-- 一级菜单的模板区域 -->
             <template slot="title">
               <i :class="iconObj[item.id]"></i>
-              <span>{{ item.authName }}</span>
+              <span>{{ item.name }}</span>
             </template>
             <!-- 二级菜单 -->
             <el-menu-item :index="'/' + subItem.path" v-for="subItem in item.children" :key="subItem.id"
@@ -37,7 +36,7 @@
               <!-- 二级菜单的模板区域 -->
               <template slot="title">
                 <i class="el-icon-menu"></i>
-                <span>{{ subItem.authName }}</span>
+                <span>{{ subItem.name }}</span>
               </template>
             </el-menu-item>
           </el-submenu>
@@ -58,11 +57,21 @@ export default {
       // 左侧菜单数据
       menuList: [],
       iconObj: {
-        '125': 'iconfont iconusers',
-        '103': 'iconfont icontijikongjian',
-        '101': 'iconfont iconshangpin',
-        '102': 'iconfont icondanju',
-        '145': 'iconfont iconbaobiao'
+        // 商品管理
+        '100': 'iconfont iconshangpin',
+        // 订单管理
+        '200': 'iconfont icondanju',
+        // 用户管理
+        '300': 'iconfont iconusers',
+
+        // 其他
+        '101': 'iconfont el-icon-menu',
+        '102': 'iconfont el-icon-menu',
+        '103': 'iconfont el-icon-menu',
+        '104': 'iconfont el-icon-menu',
+        '201': 'iconfont el-icon-menu',
+        '202': 'iconfont el-icon-menu',
+        '301': 'iconfont el-icon-menu',
       },
       // 默认不折叠
       isCollapse: false,
@@ -82,10 +91,9 @@ export default {
     },
     // 获取请求菜单
     async getMenuList() {
-      const {data: res} = await this.$http.get('menus')
-      if (res.data.status !== 200) return this.$message.error(res.data.msg)
-      this.menuList = res.data.data
-      // console.log(res)
+      const {data: res} = await this.$http.get('user/getMenu')
+      if (res.code !== 200) return this.$message.error(res.msg)
+      this.menuList = res.data.menuList
     },
     // 菜单的折叠与展开
     togleCollapse() {
