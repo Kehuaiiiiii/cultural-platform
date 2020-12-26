@@ -1,8 +1,7 @@
 package com.platform.service.impl;
 
-import com.platform.domain.Orders;
-import com.platform.domain.OrdersInfo;
-import com.platform.domain.User;
+import com.platform.DAO.Orders;
+import com.platform.DAO.OrdersInfo;
 import com.platform.mapper.OrderMapper;
 import com.platform.mapper.UserMapper;
 import com.platform.service.IOrderService;
@@ -32,7 +31,7 @@ public class OrderServiceImpl implements IOrderService {
 
 
     @Override
-    public OrdersInfo getOrderInfo(int uid,OrdersInfo orders) {
+    public OrdersInfo getOrderInfo(int uid, OrdersInfo orders) {
         OrdersInfo ordersInfo=new OrdersInfo();
         int page=orders.getPagenum();
         int size=orders.getPagesize();

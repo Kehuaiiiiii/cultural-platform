@@ -1,6 +1,6 @@
 package com.platform.mapper;
 
-import com.platform.domain.Orders;
+import com.platform.DAO.Orders;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;

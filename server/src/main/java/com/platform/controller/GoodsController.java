@@ -1,9 +1,9 @@
 package com.platform.controller;
 
-import com.platform.domain.Goods;
-import com.platform.domain.GoodsInfo;
-import com.platform.domain.JwtResult;
-import com.platform.domain.Menu;
+
+import com.platform.DAO.Goods;
+import com.platform.DAO.GoodsInfo;
+import com.platform.VO.HttpResult;
 import com.platform.service.IGoodsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
 
 
 @RestController
@@ -22,8 +21,8 @@ public class GoodsController {
     private IGoodsService goodsService;
 
     @GetMapping("getGoods")
-    public JwtResult<GoodsInfo> getGoods(GoodsInfo goodsInfo){
-        JwtResult<GoodsInfo> result = new JwtResult<>();
+    public HttpResult<GoodsInfo> getGoods(GoodsInfo goodsInfo){
+        HttpResult<GoodsInfo> result = new HttpResult<>();
         if(!StringUtils.isEmpty(goodsService.getGoods(goodsInfo))){
             result.setCode(200);
             result.setData(goodsService.getGoods(goodsInfo));
@@ -36,8 +35,8 @@ public class GoodsController {
     }
 
     @GetMapping("addGoods")
-    public JwtResult<String> addGoods(Goods goods){
-        JwtResult<String> result = new JwtResult<>();
+    public HttpResult<String> addGoods(Goods goods){
+        HttpResult<String> result = new HttpResult<>();
         if(goodsService.addGoods(goods)){
             result.setCode(200);
             result.setMsg("增加商品成功");
@@ -49,8 +48,8 @@ public class GoodsController {
     }
 
     @GetMapping("updateGoods")
-    public JwtResult<String> updateGoods(Goods goods){
-        JwtResult<String> result = new JwtResult<>();
+    public HttpResult<String> updateGoods(Goods goods){
+        HttpResult<String> result = new HttpResult<>();
         if(goodsService.updateGoods(goods)){
             result.setCode(200);
             result.setMsg("更新商品成功");
@@ -62,8 +61,8 @@ public class GoodsController {
     }
 
     @GetMapping("deleteGoods")
-    public JwtResult<String> delete(int id){
-        JwtResult<String> result = new JwtResult<>();
+    public HttpResult<String> delete(int id){
+        HttpResult<String> result = new HttpResult<>();
         if(goodsService.deleteGoods(id)){
             result.setCode(200);
             result.setMsg("删除商品成功");
