@@ -1,8 +1,9 @@
 package com.platform.controller;
 
-import com.platform.VO.HttpResult;
-import com.platform.DAO.Orders;
-import com.platform.DAO.OrdersInfo;
+import com.platform.domain.JwtResult;
+import com.platform.domain.Orders;
+import com.platform.domain.OrdersInfo;
+import com.platform.domain.User;
 import com.platform.service.IOrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
@@ -20,8 +21,8 @@ public class OrderController {
     private IOrderService orderService;
 
     @GetMapping("getOrder")
-    public HttpResult<OrdersInfo> getOrderInfo(int uid, OrdersInfo orders){
-        HttpResult<OrdersInfo> result = new HttpResult<>();
+    public JwtResult<OrdersInfo> getOrderInfo(int uid, OrdersInfo orders){
+        JwtResult<OrdersInfo> result = new JwtResult<>();
         if(!StringUtils.isEmpty(orderService.getOrderInfo(uid,orders))){
             result.setCode(200);
             result.setData(orderService.getOrderInfo(uid,orders));

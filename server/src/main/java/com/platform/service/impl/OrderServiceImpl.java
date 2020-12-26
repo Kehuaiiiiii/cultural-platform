@@ -1,7 +1,8 @@
 package com.platform.service.impl;
 
-import com.platform.DAO.Orders;
-import com.platform.DAO.OrdersInfo;
+import com.platform.domain.Orders;
+import com.platform.domain.OrdersInfo;
+import com.platform.domain.User;
 import com.platform.mapper.OrderMapper;
 import com.platform.mapper.UserMapper;
 import com.platform.service.IOrderService;

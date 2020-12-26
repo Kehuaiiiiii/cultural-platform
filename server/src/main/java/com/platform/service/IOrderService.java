@@ -1,7 +1,7 @@
 package com.platform.service;
 
-import com.platform.DAO.Orders;
-import com.platform.DAO.OrdersInfo;
+import com.platform.domain.Orders;
+import com.platform.domain.OrdersInfo;
 
 
 public interface IOrderService {
