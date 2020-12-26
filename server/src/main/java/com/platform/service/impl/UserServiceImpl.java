@@ -59,7 +59,6 @@ public class UserServiceImpl implements IUserService {
         for (int i = 0; i < menu.size(); i++) {
             if (menu.get(i).getPid() != 0) {
                 int p = menu.get(i).getPid();
-                menu.get(i).setPath(map.get(p).getName());
                 List<Menu> list = map.get(p).getChildren() == null ? new ArrayList<>() : map.get(p).getChildren();
                 list.add(menu.get(i));
                 map.get(p).setChildren(list);
