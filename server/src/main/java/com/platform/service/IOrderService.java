@@ -1,13 +1,13 @@
 package com.platform.service;
 
 import com.platform.DAO.Orders;
+import com.platform.DAO.OrdersInfo;
 
-import java.util.List;
 
 public interface IOrderService {
     Boolean addOrder(Orders orders);
 
     Boolean updateOrder(Orders orders);
 
-    List<Orders> getOrderInfo(Orders orders);
+    OrdersInfo getOrderInfo(int uid,OrdersInfo ordersInfo);
 }

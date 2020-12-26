@@ -8,13 +8,24 @@
         insert into orders values(null,#{user_id},#{merchant_id},#{pay_status},#{send_status},#{order_price},#{order_number},#{order_status})
     </insert>
 
-    <update id="updateOrder" parameterType="Orders">
+    <update id="updateOrder" parameterType="Integer">
         update orders set send_status=#{send_status} where id=#{id}
     </update>
 
-    <select id="getOrderInfo" parameterType="Orders" resultType="Orders">
-        select * from orders where user_id=#{user_id}
+    <select id="getAllOrders" parameterType="Integer" resultType="Orders">
+        select * from orders limit #{min},#{max}
+    </select>
 
+    <select id="getOrders" parameterType="Integer" resultType="Orders">
+        select * from orders where user_id=#{uid} or merchant_id=#{uid} limit #{min},#{max}
+    </select>
+
+    <select id="getAllTotal" resultType="Integer">
+        select count(*) from orders
+    </select>
+
+    <select id="getTotal" parameterType="Goods" resultType="Integer">
+        select count(*) from orders where user_id=#{uid} or merchant_id=#{uid}
     </select>
 
 </mapper>
