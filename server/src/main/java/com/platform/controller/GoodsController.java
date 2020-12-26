@@ -24,9 +24,9 @@ public class GoodsController {
     @GetMapping("getGoods")
     public JwtResult<GoodsInfo> getGoods(GoodsInfo goodsInfo){
         JwtResult<GoodsInfo> result = new JwtResult<>();
-        if(!StringUtils.isEmpty(goodsService.getAllGoods(goodsInfo))){
+        if(!StringUtils.isEmpty(goodsService.getGoods(goodsInfo))){
             result.setCode(200);
-            result.setData(goodsService.getAllGoods(goodsInfo));
+            result.setData(goodsService.getGoods(goodsInfo));
             result.setMsg("请求成功");
         }else{
             result.setCode(304);
@@ -38,12 +38,38 @@ public class GoodsController {
     @GetMapping("addGoods")
     public JwtResult<String> addGoods(Goods goods){
         JwtResult<String> result = new JwtResult<>();
-        if(1==1){//goodsService.addGoods(goods)
+        if(goodsService.addGoods(goods)){
             result.setCode(200);
             result.setMsg("增加商品成功");
         }else{
             result.setCode(304);
             result.setMsg("增加商品失败");
+        }
+        return result;
+    }
+
+    @GetMapping("updateGoods")
+    public JwtResult<String> updateGoods(Goods goods){
+        JwtResult<String> result = new JwtResult<>();
+        if(goodsService.updateGoods(goods)){
+            result.setCode(200);
+            result.setMsg("更新商品成功");
+        }else{
+            result.setCode(304);
+            result.setMsg("更新商品失败");
+        }
+        return result;
+    }
+
+    @GetMapping("deleteGoods")
+    public JwtResult<String> delete(int id){
+        JwtResult<String> result = new JwtResult<>();
+        if(goodsService.deleteGoods(id)){
+            result.setCode(200);
+            result.setMsg("删除商品成功");
+        }else{
+            result.setCode(304);
+            result.setMsg("删除商品失败");
         }
         return result;
     }

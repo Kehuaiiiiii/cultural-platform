@@ -20,7 +20,9 @@
         select * from user where uid=#{uid}
     </select>
 
-
+    <select id="getRid" parameterType="Integer" resultType="Integer">
+        select rid from user where uid=#{uid}
+    </select>
 
 
 

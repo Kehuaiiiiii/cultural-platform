@@ -9,11 +9,17 @@ import java.util.List;
 
 public interface GoodsMapper {
 
-    List<Goods> getGoods(Goods goods, @Param("min")int min,@Param("max")int max);
+    List<Goods> getGoods(@Param("name") String name, @Param("min")int min,@Param("max")int max);
 
-    int getTotal(Goods goods);
+    int getTotal(@Param("name") String name);
 
-    int getAllTotal();
+    //int getAllTotal();
 
-    List<Goods> getAllGoods(@Param("min")int min,@Param("max")int max);
+    //List<Goods> getAllGoods(@Param("min")int min,@Param("max")int max);
+
+    Boolean addGoods(Goods goods);
+
+    Boolean updateGoods(Goods goods);
+
+    Boolean deleteGoods(int id);
 }

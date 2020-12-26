@@ -6,5 +6,11 @@ import com.platform.domain.GoodsInfo;
 import java.util.List;
 
 public interface IGoodsService {
-    GoodsInfo getAllGoods(GoodsInfo goodsInfo);
+    GoodsInfo getGoods(GoodsInfo goodsInfo);
+
+    Boolean addGoods(Goods goods);
+
+    Boolean updateGoods(Goods goods);
+
+    Boolean deleteGoods(int id);
 }

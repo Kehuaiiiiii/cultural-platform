@@ -3,7 +3,7 @@ package com.platform.domain;
 import java.util.List;
 
 public class GoodsInfo {
-    private Goods good;       //查询参数
+    private String name;       //查询参数
     private int pagenum;      //当前页码
     private int pagesize;     //每页商品数量
     private int total;        //商品总数
@@ -25,12 +25,12 @@ public class GoodsInfo {
         this.pagenum = pagenum;
     }
 
-    public Goods getGood() {
-        return good;
+    public String getName() {
+        return name;
     }
 
-    public void setGood(Goods good) {
-        this.good = good;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public int getTotal() {

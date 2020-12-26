@@ -20,7 +20,7 @@ public interface UserMapper{
 
     User getUserInfo(User user);
 
-
+    Integer getRid(int uid);
 
 
 
