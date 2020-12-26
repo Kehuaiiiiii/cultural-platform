@@ -54,6 +54,6 @@ public final class JwtUtil {
      * @return token
      */
     public static String getHeaderKey() {
-        return "token";
+        return "Authorization";
     }
 }

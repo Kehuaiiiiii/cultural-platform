@@ -1,20 +1,30 @@
 package com.platform.controller;
 
-import com.platform.domain.*;
+import com.platform.VO.HttpResult;
+import com.platform.VO.LoginRequest;
+import com.platform.VO.LoginResponse;
+import com.platform.DAO.*;
+import com.platform.VO.MenuResponse;
+import com.platform.constant.HttpError;
 import com.platform.service.IUserService;
+import com.platform.util.HttpContextUtil;
+import com.platform.util.HttpResultUtil;
 import com.platform.util.JwtUtil;
 import io.jsonwebtoken.Claims;
+import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.util.CollectionUtils;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.xml.ws.spi.http.HttpContext;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+
 
 @RestController
 @RequestMapping("user")
@@ -24,45 +34,43 @@ public class UserController {
     private IUserService userService;
 
     @PostMapping("login")
-    public JwtResult<String> Login(HttpServletRequest request) {
-        JwtResult<String> result = new JwtResult<>();
-        String zh = request.getParameter("username");
-        String pwd = request.getParameter("password");
-        if (!StringUtils.isEmpty(zh) && !StringUtils.isEmpty(pwd)) {
-            User user = userService.Login(zh, pwd);
-            if (user != null) {
-                Map<String, Object> map = new HashMap<>();
-                map.put("rid",user.getRid());
-                map.put("uid",user.getUid());
-                String token = JwtUtil.generateToken(map);
-                result.setCode(200);
-                result.setData(token);
-                result.setMsg("请求成功");
-            } else {
-                result.setCode(301);
-                result.setData("用户名或密码错误");
-            }
-        } else {
-            result.setCode(302);
-            result.setData("输入错误");
+    public HttpResult<LoginResponse> Login(@RequestBody LoginRequest request) {
+        // 参数检查
+        String username = request.getUsername();
+        String password = request.getPassword();
+        if (StringUtils.isEmpty(username) || StringUtils.isEmpty(password)) {
+            return HttpResultUtil.error(HttpError.PARAMETER_ILLEGAL_CODE, HttpError.PARAMETER_ILLEGAL_MSG);
         }
-        return result;
+        System.out.println("Login: " + username + " " + password);
+        User user = userService.Login(username, password);
+        if (user == null) {
+            return HttpResultUtil.error(301, "用户名或密码错误");
+        }
+
+        LoginResponse response = new LoginResponse();
+        BeanUtils.copyProperties(user, response);
+
+        Map<String, Object> tokenMap = new HashMap<>();
+        tokenMap.put("rid", user.getRid());
+        tokenMap.put("uid", user.getUid());
+        String token = JwtUtil.generateToken(tokenMap);
+        response.setToken(token);
+
+        return HttpResultUtil.success(response);
     }
 
     @GetMapping("getMenu")
-    public JwtResult<ArrayList<Menu>> getMenu(String token){
-        Claims claims=JwtUtil.verifyAndGetClaimsByToken(token);
-        JwtResult<ArrayList<Menu>> result = new JwtResult<>();
-        int rid=(int)claims.get("rid");
-        if(!StringUtils.isEmpty(userService.getMenu(rid))){
-            result.setCode(200);
-            result.setData(userService.getMenu(rid));
-            result.setMsg("请求成功");
-        }else {
-            result.setCode(302);
-            result.setMsg("请求失败");
+    public HttpResult<MenuResponse> getMenu(HttpServletRequest request) {
+        int rid = HttpContextUtil.getRid(request);
+        System.out.println("rid: " + rid);
+        List<Menu> menuList = userService.getMenu(rid);
+        if (CollectionUtils.isEmpty(menuList)) {
+            return HttpResultUtil.error(301, "未设置角色权限");
         }
-        return result;
+        MenuResponse response = new MenuResponse();
+        response.setMenuList(menuList);
+
+        return HttpResultUtil.success(response);
     }
 
     @GetMapping("logout")
@@ -87,12 +95,11 @@ public class UserController {
 
     @GetMapping("getUserInfo")
     public User getAdminInfo(User user) {
-        if (!StringUtils.isEmpty(userService.getUserInfo(user)))
-            return userService.getUserInfo(user);
+//        if (!StringUtils.isEmpty(userService.getUserInfo(user)))
+//            return userService.getUserInfo(user);
+//        return null;
         return null;
     }
-
-
 
 
 }

@@ -5,7 +5,7 @@
 <mapper namespace="com.platform.mapper.UserMapper">
 
     <select id="login" parameterType="String" resultType="User">
-        select * from user where username=#{zh} and password=#{pwd}
+        select * from user where username=#{username} and password=#{password}
     </select>
 
     <update id="updateUser" parameterType="User">

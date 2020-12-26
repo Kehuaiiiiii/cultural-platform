@@ -3,7 +3,7 @@
     <div class="login_box">
       <div class="avatar_box">
         <!-- 头像区域 -->
-        <img src="../assets/logo.png" alt />
+        <img src="../assets/logo.png" alt/>
       </div>
       <!-- 登录表单区域 -->
       <el-form ref="loginFormRef" :model="loginForm" :rules="loginFormRules" label-width="0px" class="login_form">
@@ -28,24 +28,24 @@
 
 <script>
 export default {
-  data(){
+  data() {
     return {
       // 登陆表单的数据绑定对象
       loginForm: {
-        username:'admin',
-        password:'123456',
+        username: 'admin',
+        password: '123456',
       },
       // 这是表单的验证规则对象
       loginFormRules: {
         // 验证用户名是否合法
-        username:[
-          { required:true, message:"请输入登录用户名", trigger:"blur" },
-          { min:3, max:15, message:"长度在3到15个字符中间", trigger:"blur" }
+        username: [
+          {required: true, message: "请输入登录用户名", trigger: "blur"},
+          {min: 3, max: 15, message: "长度在3到15个字符中间", trigger: "blur"}
         ],
         // 验证密码是否合法
-        password:[
-          { required:true, message:"请输入登录密码", trigger:"blur" },
-          { min:6, max:15, message:"长度在6到15个字符中间", trigger:"blur" }
+        password: [
+          {required: true, message: "请输入登录密码", trigger: "blur"},
+          {min: 6, max: 15, message: "长度在6到15个字符中间", trigger: "blur"}
         ],
       }
     }
@@ -58,12 +58,13 @@ export default {
     // 登录预验证 valid是验证结果 判断验证通过/失败
     login() {
       this.$refs.loginFormRef.validate(async valid => {
-        if(!valid) return;
+        if (!valid) return;
         // 发送请求
-        const {data: res} = await this.$http.get('login',this.loginForm);
-        if(res.data.status!==200) return this.$message.error('登陆失败');
+        const {data: res} = await this.$http.post('user/login', this.loginForm);
+        console.log(res)
+        if (res.code !== 200) return this.$message.error('登陆失败 原因: ' + res.msg);
         this.$message.success('登陆成功')
-        // 保存token
+        // 保存token'
         window.sessionStorage.setItem('token', res.data.token);
         // 跳转到/home
         this.$router.push('/home')
@@ -78,9 +79,10 @@ export default {
   height: 100%;
   background-image: url('../assets/bg.jpg');
   background-repeat: no-repeat;
-  background-size:100% 100%;
+  background-size: 100% 100%;
   background-color: #fff;
 }
+
 .login_box {
   width: 450px;
   height: 280px;
@@ -92,23 +94,26 @@ export default {
   top: 50%;
   transform: translate(-50%, -50%);
   opacity: 0.95;
-  .avatar_box {
-    height: 130px;
-    width: 130px;
-    border-radius: 80%;
-    padding: 10px;
-
-    position: absolute;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background: rgba(255, 255, 255, 0);
-    img {
-      width: 100%;
-      height: 100%;
-      background-color: #eee;
-    }
-  }
 }
+
+.avatar_box {
+  height: 130px;
+  width: 130px;
+  border-radius: 80%;
+  padding: 10px;
+
+  position: absolute;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(255, 255, 255, 0);
+}
+
+img {
+  width: 100%;
+  height: 100%;
+  background-color: #eee;
+}
+
 .login_form {
   position: absolute;
   bottom: 0px;
@@ -116,6 +121,7 @@ export default {
   padding: 0px 20px;
   box-sizing: border-box;
 }
+
 .btns {
   display: flex;
   justify-content: flex-end;

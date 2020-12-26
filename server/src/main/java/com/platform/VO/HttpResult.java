@@ -1,9 +1,9 @@
-package com.platform.domain;
+package com.platform.VO;
 
-public class JwtResult<T> {
+public class HttpResult<T> {
     private Integer code; // 返回代码(200:成功)
-    private T data; // 返回的数据
     private String msg="";//返回提示信息
+    private T data; // 返回的数据
 
     public String getMsg() {
         return msg;
@@ -15,11 +15,11 @@ public class JwtResult<T> {
 
 
 
-    public JwtResult() {
+    public HttpResult() {
         super();
     }
 
-    public JwtResult(Integer code, T data) {
+    public HttpResult(Integer code, T data) {
         super();
         this.code = code;
         this.data = data;
