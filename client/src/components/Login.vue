@@ -67,7 +67,7 @@ export default {
         // 保存token'
         window.sessionStorage.setItem('token', res.data.token);
         // 跳转到/home
-        this.$router.push('/home')
+        this.$router.push({path:"/home", param:{username: res.data.username}})
       });
     }
   }
