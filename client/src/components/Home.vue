@@ -2,10 +2,11 @@
   <el-container>
     <!-- 头部 -->
     <el-header>
-      <div>
+      <div class="head">
         <img src="../assets/logo.png" alt/>
         <span>南京文创平台-订单管理系统</span>
       </div>
+<!--      <span>欢迎回来，{{this.$route.params.username}}</span>-->
       <el-button type="info" @click="logout">退出</el-button>
     </el-header>
     <!-- 主体 -->
@@ -122,12 +123,13 @@ export default {
   font-size: 20px;
 }
 
-> div {
+.head {
   display: flex;
   align-items: center;
 }
 
 img {
+  margin-left: 10px;
   height: 40px;
 }
 
