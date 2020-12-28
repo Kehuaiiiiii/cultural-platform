@@ -55,7 +55,6 @@ public class UserController {
         tokenMap.put("uid", user.getUid());
         String token = JwtUtil.generateToken(tokenMap);
         response.setToken(token);
-
         return HttpResultUtil.success(response);
     }
 
@@ -69,7 +68,6 @@ public class UserController {
         }
         MenuResponse response = new MenuResponse();
         response.setMenuList(menuList);
-
         return HttpResultUtil.success(response);
     }
 
@@ -79,25 +77,24 @@ public class UserController {
     }
 
     @GetMapping("addUser")
-    public String addAdmin(User user) {
+    public HttpResult<String> addAdmin(User user) {
         if (userService.addUser(user))
-            return "创建成功";
-        return "创建失败";
+            return HttpResultUtil.error(301, "添加失败");
+        return HttpResultUtil.success("添加成功");
     }
 
     @GetMapping("updateUser")
-    public String updateAdmin(User user) {
+    public HttpResult<String> updateAdmin(User user) {
 
         if (userService.updateUser(user))
-            return "更新成功";
-        return "更新失败";
+            return HttpResultUtil.error(301, "更新失败");
+        return HttpResultUtil.success("更新成功");
     }
 
     @GetMapping("getUserInfo")
     public User getAdminInfo(User user) {
-//        if (!StringUtils.isEmpty(userService.getUserInfo(user)))
-//            return userService.getUserInfo(user);
-//        return null;
+        //if (!StringUtils.isEmpty(userService.getUserInfo(user)))
+        //    return userService.getUserInfo(user);
         return null;
     }
 

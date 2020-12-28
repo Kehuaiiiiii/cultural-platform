@@ -5,6 +5,7 @@ import com.platform.DAO.Goods;
 import com.platform.DAO.GoodsInfo;
 import com.platform.VO.HttpResult;
 import com.platform.service.IGoodsService;
+import com.platform.util.HttpResultUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -70,6 +71,18 @@ public class GoodsController {
             result.setCode(304);
             result.setMsg("删除商品失败");
         }
+        return result;
+    }
+
+    @GetMapping("getVerGoods")
+    public HttpResult<GoodsInfo> del(GoodsInfo goodsInfo){
+        HttpResult<GoodsInfo> result = new HttpResult<>();
+        GoodsInfo goods=goodsService.getVerGoods(goodsInfo);
+        if(StringUtils.isEmpty(goods))
+            return HttpResultUtil.error(301, "获取审核商品失败");
+        result.setCode(200);
+        result.setData(goods);
+        result.setMsg("获取审核商品成功");
         return result;
     }
 }

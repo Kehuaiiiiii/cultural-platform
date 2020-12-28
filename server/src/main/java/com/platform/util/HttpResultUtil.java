@@ -10,6 +10,13 @@ public class HttpResultUtil<T> {
         return result;
     }
 
+    public static <T> HttpResult<T> success(String msg) {
+        HttpResult<T> result = new HttpResult<>();
+        result.setCode(200);
+        result.setMsg(msg);
+        return result;
+    }
+
     public static <T> HttpResult<T> error(Integer code, String msg) {
         HttpResult<T> result = new HttpResult<>();
         result.setCode(code);

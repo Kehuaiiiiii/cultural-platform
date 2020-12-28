@@ -19,25 +19,14 @@ public class GoodsServiceImpl implements IGoodsService{
     private GoodsMapper goodsMapper;
 
     @Override
-    public GoodsInfo getGoods(GoodsInfo goodsInfo) {
-        GoodsInfo goods=new GoodsInfo();
-        int page=goodsInfo.getPagenum();
-        int size=goodsInfo.getPagesize();
-        goods.setPagenum(page);
-        goods.setPagesize(size);
+    public GoodsInfo getGoods(GoodsInfo goods) {
+        int page=goods.getPagenum();
+        int size=goods.getPagesize();
         int min=(page-1)*size;
         int max=page*size;
-        String name=goodsInfo.getName();
+        String name=goods.getName();
         goods.setTotal(goodsMapper.getTotal(name));
         goods.setGoods(goodsMapper.getGoods(name,min,max));
-        /*if(goodsInfo.getQuery()!=null) {
-            Goods good=goodsInfo.getQuery();
-            goods.setTotal(goodsMapper.getTotal(good));
-            goods.setGoods(goodsMapper.getGoods(good,min,max));
-        }else{
-            goods.setTotal(goodsMapper.getAllTotal());
-            goods.setGoods(goodsMapper.getAllGoods(min,max));
-        }*/
         return goods;
     }
 
@@ -45,21 +34,12 @@ public class GoodsServiceImpl implements IGoodsService{
     public Boolean addGoods(Goods goods) {
         String Nowtime=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Calendar.getInstance().getTime());
         Date time=Date.valueOf(Nowtime);
-        goods.setAdd_time(time);
-        goods.setUpd_time(time);
-        goods.setVersion_id(1);
-        goods.setGoods_state(1);
+        goods.setCreated_time(time);
         return goodsMapper.addGoods(goods);
     }
 
     @Override
     public Boolean updateGoods(Goods goods) {
-        String Nowtime=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Calendar.getInstance().getTime());
-        Date time=Date.valueOf(Nowtime);
-        goods.setUpd_time(time);
-        int v=goods.getVersion_id();
-        v++;
-        goods.setVersion_id(v);
         return goodsMapper.updateGoods(goods);
     }
 
@@ -68,5 +48,14 @@ public class GoodsServiceImpl implements IGoodsService{
         return goodsMapper.deleteGoods(id);
     }
 
-
+    @Override
+    public GoodsInfo getVerGoods(GoodsInfo goodsInfo) {
+        int page=goodsInfo.getPagenum();
+        int size=goodsInfo.getPagesize();
+        int min=(page-1)*size;
+        int max=page*size;
+        goodsInfo.setTotal(goodsMapper.getVerTotal());
+        goodsInfo.setGoods(goodsMapper.getVerGoods(min,max));
+        return goodsInfo;
+    }
 }

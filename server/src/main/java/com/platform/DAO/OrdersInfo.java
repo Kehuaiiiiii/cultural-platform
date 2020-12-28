@@ -6,7 +6,7 @@ import java.util.List;
 
 @Data
 public class OrdersInfo {
-    private Orders query;       //查询参数
+    private String username;       //按用户名查询
     private int pagenum;        //当前页码
     private int pagesize;       //每页订单数量
     private int total;          //订单总数

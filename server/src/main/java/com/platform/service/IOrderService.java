@@ -10,4 +10,6 @@ public interface IOrderService {
     Boolean updateOrder(Orders orders);
 
     OrdersInfo getOrderInfo(int uid, OrdersInfo ordersInfo);
+
+    OrdersInfo searchOrder(String username,OrdersInfo ordersInfo);
 }

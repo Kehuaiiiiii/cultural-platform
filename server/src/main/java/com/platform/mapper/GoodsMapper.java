@@ -1,6 +1,7 @@
 package com.platform.mapper;
 
 import com.platform.DAO.Goods;
+import com.platform.DAO.GoodsInfo;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -12,13 +13,13 @@ public interface GoodsMapper {
 
     int getTotal(@Param("name") String name);
 
-    //int getAllTotal();
-
-    //List<Goods> getAllGoods(@Param("min")int min,@Param("max")int max);
-
     Boolean addGoods(Goods goods);
 
     Boolean updateGoods(Goods goods);
 
     Boolean deleteGoods(int id);
+
+    List<Goods> getVerGoods(@Param("min")int min,@Param("max")int max);
+
+    int getVerTotal();
 }

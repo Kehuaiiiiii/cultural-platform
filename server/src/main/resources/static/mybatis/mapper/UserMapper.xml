@@ -24,6 +24,8 @@
         select rid from user where uid=#{uid}
     </select>
 
-
+    <select id="getUid" parameterType="String" resultType="Integer">
+        select uid from user where username like "%${username}%"
+    </select>
 
 </mapper>

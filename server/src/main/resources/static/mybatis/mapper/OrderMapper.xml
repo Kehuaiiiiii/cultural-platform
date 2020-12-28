@@ -5,27 +5,51 @@
 <mapper namespace="com.platform.mapper.OrderMapper">
 
     <insert id="addOrder" parameterType="Orders" >
-        insert into orders values(null,#{user_id},#{merchant_id},#{pay_status},#{send_status},#{order_price},#{order_number},#{order_status})
+        insert into orders values(null,#{buyer_id},#{seller_id},#{goods_id},#{goods_number},#{order_price},#{pay_status},#{created_time},#{modified_time})
     </insert>
 
     <update id="updateOrder" parameterType="Integer">
         update orders set send_status=#{send_status} where id=#{id}
     </update>
 
+
     <select id="getAllOrders" parameterType="Integer" resultType="Orders">
         select * from orders limit #{min},#{max}
     </select>
 
     <select id="getOrders" parameterType="Integer" resultType="Orders">
-        select * from orders where user_id=#{uid} or merchant_id=#{uid} limit #{min},#{max}
+        select * from orders where buyer_id=#{uid} or seller_id=#{uid} limit #{min},#{max}
     </select>
 
     <select id="getAllTotal" resultType="Integer">
         select count(*) from orders
     </select>
 
-    <select id="getTotal" parameterType="Goods" resultType="Integer">
-        select count(*) from orders where user_id=#{uid} or merchant_id=#{uid}
+    <select id="getTotal" parameterType="Orders" resultType="Integer">
+        select count(*) from orders where buyer_id=#{uid} or seller_id=#{uid}
+    </select>
+
+    <select id="getOrdAdmin"  resultType="Orders">
+        select * from orders where buyer_id in
+        <foreach collection="list" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        or seller_id in
+        <foreach collection="list" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        limit #{min},#{max}
+    </select>
+
+    <select id="getTotalAdmin"  resultType="Orders">
+        select count(*) from orders where buyer_id in
+        <foreach collection="list" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        or seller_id in
+        <foreach collection="list" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
     </select>
 
 </mapper>

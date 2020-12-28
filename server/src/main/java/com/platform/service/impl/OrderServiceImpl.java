@@ -32,29 +32,32 @@ public class OrderServiceImpl implements IOrderService {
 
     @Override
     public OrdersInfo getOrderInfo(int uid, OrdersInfo orders) {
-        OrdersInfo ordersInfo=new OrdersInfo();
         int page=orders.getPagenum();
         int size=orders.getPagesize();
         int min=(page-1)*size;
         int max=page*size;
-        ordersInfo.setPagenum(page);
-        ordersInfo.setPagesize(size);
         int rid=userMapper.getRid(uid);
         if(rid>1){
-            ordersInfo.setTotal(orderMapper.getTotal(uid));
-            ordersInfo.setOrders(orderMapper.getOrders(uid,min,max));
+            orders.setTotal(orderMapper.getTotal(uid));
+            orders.setOrders(orderMapper.getOrders(uid,min,max));
         }else{
-            ordersInfo.setTotal(orderMapper.getAllTotal());
-            ordersInfo.setOrders(orderMapper.getAllOrders(min,max));
+            orders.setTotal(orderMapper.getAllTotal());
+            orders.setOrders(orderMapper.getAllOrders(min,max));
         }
-        /*if(orders.getQuery()!=null) {
-            Orders order=orders.getQuery();
-            ordersInfo.setTotal(orderMapper.getTotal(order));
-            ordersInfo.setOrders(orderMapper.getOrders(order,min,max));
-        }else{
-            ordersInfo.setTotal(orderMapper.getAllTotal());
-            ordersInfo.setOrders(orderMapper.getAllOrders(min,max));
-        }*/
+        return orders;
+    }
+
+    @Override
+    public OrdersInfo searchOrder(String username,OrdersInfo ordersInfo) {
+        int page=ordersInfo.getPagenum();
+        int size=ordersInfo.getPagesize();
+        int min=(page-1)*size;
+        int max=page*size;
+        List<Integer> list = userMapper.getUid(username);
+        ordersInfo.setOrders(orderMapper.getOrdAdmin(list,min,max));
+        ordersInfo.setTotal(orderMapper.getTotalAdmin(list));
         return ordersInfo;
     }
+
+
 }

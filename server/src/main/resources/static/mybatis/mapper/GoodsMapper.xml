@@ -7,7 +7,7 @@
         select * from goods limit #{min},#{max}
     </select>-->
     <select id="getGoods"  resultType="Goods">
-        select * from goods <if test="name!=null||name!=''">where goods_name like "%${name}%"</if>  limit #{min},#{max}
+        select * from goods <if test="name!=null||name!=''">where name like "%${name}%"</if>  limit #{min},#{max}
     </select>
 
     <!--<select id="getAllTotal" resultType="Integer">
@@ -15,20 +15,28 @@
     </select>-->
 
     <select id="getTotal" parameterType="String" resultType="Integer">
-        select count(*) from goods <if test="name!=null||name!=''">where goods_name like "%${name}%"</if>
+        select count(*) from goods <if test="name!=null||name!=''">where name like "%${name}%"</if>
     </select>
 
     <insert id="addGoods" parameterType="Goods">
-        insert into goods values(null,#{goods_name},#{goods_price},#{goods_number},#{goods_weight},#{goods_state},#{goods_introduce},#{add_time},#{upd_time},#{version_id},#{pics})
+        insert into goods values(null,#{uid},#{name},#{price},#{number},#{weight},,#{introduce},#{url},#{status},#{created_time})
     </insert>
 
     <update id="updateGoods" parameterType="Goods">
-        update goods set goods_name=#{goods_name},goods_price=#{goods_price},
-        goods_number=#{goods_number},goods_weight=#{goods_weight},goods_introduce=#{goods_introduce},
-        upd_time=#{upd_time},version_id=#{version_id},pics=#{pics} where goods_id=#{goods_id}
+        update goods set name=#{name},price=#{price},
+        number=#{number},weight=#{weight},introduce=#{introduce},url=#{url},
+        created_time=#{created_time} where id=#{id}
     </update>
 
     <delete id="deleteGoods" parameterType="Integer">
-        delete from goods where goods_id=#{id}
+        delete from goods where id=#{id}
     </delete>
+
+    <select id="getVerTotal" resultType="Integer">
+        select count(*) from goods where status=0
+    </select>
+
+    <select id="getVerGoods" parameterType="Integer" resultType="Goods">
+        select * from goods where status=0 limit #{min},#{max}
+    </select>
 </mapper>
