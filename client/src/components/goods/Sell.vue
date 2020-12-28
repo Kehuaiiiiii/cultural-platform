@@ -113,10 +113,10 @@
               <el-input-number v-model="goodsDetailForm.price" :min="0" :controls="false" :precision="2" readonly></el-input-number>
             </el-form-item>
             <el-form-item label="数量" prop="number">
-              <el-input v-model.number="goodsDetailForm.number" oninput ="value=value.replace(/[^0-9]/g,'')" readonly></el-input>
+              <el-input v-model.number="goodsDetailForm.number" oninput="value=value.replace(/[^0-9]/g,'')" readonly></el-input>
             </el-form-item>
             <el-form-item label="重量(克)" prop="weight">
-              <el-input v-model.number="goodsDetailForm.weight" oninput ="value=value.replace(/[^0-9]/g,'')" readonly></el-input>
+              <el-input v-model.number="goodsDetailForm.weight" oninput="value=value.replace(/[^0-9]/g,'')" readonly></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="8">
