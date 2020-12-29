@@ -23,7 +23,7 @@
         <el-table-column label="商品重量(kg)" prop="weight" width="140px" :resizable="false"></el-table-column>
         <el-table-column label="数量" prop="number" width="70px" :resizable="false"></el-table-column>
         <el-table-column label="上架时间" prop="created_time" width="100px" :resizable="false">
-          <template slot-scope="scope">{{scope.row.created_time | dataFormat }}</template>
+          <template slot-scope="scope">{{scope.row.created_time | dateFormat }}</template>
         </el-table-column>
         <el-table-column label="操作" width="100px" :resizable="false">
           <template slot-scope="scope">
@@ -127,30 +127,18 @@
 </template>
 
 <script>
+import Vue from "vue";
+
 export default {
   data () {
     return {
       queryInfo: {
         name: '',
         pagenum: 1,
-        pagesize: 10
+        pagesize: 5
       },
       // 商品列表
-      goodsList: [{
-        id: 101,
-        name: 'abc',
-        price: 200,
-        weight: 10,
-        number: 20,
-        created_time: '2020-12-24'
-      },{
-        id: 2,
-        name: 'abc',
-        price: 100,
-        weight: 5,
-        number: 1,
-        created_time: '2020-11-24'
-      }],
+      goodsList: [],
       // 商品总数
       total: 0,
       // 商品详情对话框
@@ -196,14 +184,13 @@ export default {
   methods: {
     // 根据分页获取对应的商品列表
     async getGoodsList () {
-      const { data: res } = await this.$http.get('goods/list', {
+      const { data: res } = await this.$http.get('goods/getGoods', {
         params: this.queryInfo
       })
       if (res.code !== 200) {
         return this.$message.error('获取商品列表失败！ 原因: ' + res.msg)
       }
       this.goodsList = res.data.goods
-      //   console.log(this.goodsList)
       this.total = res.data.total
     },
     handleSizeChange (newSize) {
@@ -218,10 +205,17 @@ export default {
       this.goodsDetailDialogVisible = false
       this.$refs.goodsDetailForm.resetFields()
     },
-    async getGoodsInfo(id) {
+    getGoodsInfo(id) {
       this.goodsDetailDialogVisible = true
-      this.goodsDetailForm.name = '12345'
       console.log(id)
+      console.log(this.goodsDetailForm)
+      this.goodsList.forEach(function (item) {
+        if(item.id === id) {
+          this.goodsDetailForm.name = item.name
+          console.log(item)
+          return
+        }
+      })
     },
     calcTotal() {
       this.buyGoodsForm.totol = this.buyGoodsForm.number * this.buyGoodsForm.price
@@ -241,6 +235,17 @@ export default {
         console.log(buyForm)
       })
     },
+  },
+  filters: {
+    dateFormat: function(originVal) {
+      const dt = new Date(originVal)
+
+      const y = dt.getFullYear()
+      const m = (dt.getMonth() + 1 + '').padStart(2, '0')
+      const d = (dt.getDate() + '').padStart(2, '0')
+
+      return `${y}-${m}-${d}`
+    }
   }
 }
 </script>
