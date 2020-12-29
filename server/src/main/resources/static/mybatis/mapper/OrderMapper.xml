@@ -41,7 +41,7 @@
         limit #{min},#{max}
     </select>
 
-    <select id="getTotalAdmin"  resultType="Orders">
+    <select id="getTotalAdmin"  resultType="Integer">
         select count(*) from orders where buyer_id in
         <foreach collection="list" index="index" item="item" open="(" separator="," close=")">
             #{item}

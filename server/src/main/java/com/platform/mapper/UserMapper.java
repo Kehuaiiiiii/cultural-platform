@@ -13,7 +13,7 @@ public interface UserMapper{
 
     Boolean updateUser(User user);
 
-    User getUserInfo(User user);
+    List<User> getUserInfo();
 
     Integer getRid(int uid);
 

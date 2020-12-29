@@ -4,7 +4,7 @@ import com.platform.DAO.Goods;
 import com.platform.DAO.GoodsInfo;
 
 public interface IGoodsService {
-    GoodsInfo getGoods(GoodsInfo request);
+    GoodsInfo getGoods(int uid,int rid,GoodsInfo goodsInfo);
 
     Boolean addGoods(Goods goods);
 

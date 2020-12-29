@@ -5,6 +5,7 @@ import com.platform.DAO.Goods;
 import com.platform.DAO.GoodsInfo;
 import com.platform.VO.HttpResult;
 import com.platform.service.IGoodsService;
+import com.platform.util.HttpContextUtil;
 import com.platform.util.HttpResultUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
 
 
 @RestController
@@ -21,68 +23,69 @@ public class GoodsController {
     @Autowired
     private IGoodsService goodsService;
 
+    /**
+     * 获得商品，商家只能获得自己店铺的商品
+     * @param request
+     * @param goodsInfo
+     * @return
+     */
     @GetMapping("getGoods")
-    public HttpResult<GoodsInfo> getGoods(GoodsInfo goodsInfo){
-        HttpResult<GoodsInfo> result = new HttpResult<>();
-        if(!StringUtils.isEmpty(goodsService.getGoods(goodsInfo))){
-            result.setCode(200);
-            result.setData(goodsService.getGoods(goodsInfo));
-            result.setMsg("请求成功");
-        }else{
-            result.setCode(304);
-            result.setMsg("请求失败");
-        }
-        return result;
+    public HttpResult<GoodsInfo> getGoods(HttpServletRequest request,GoodsInfo goodsInfo){
+        int rid = HttpContextUtil.getRid(request);
+        int uid = HttpContextUtil.getUid(request);
+        GoodsInfo goods = goodsService.getGoods(uid,rid,goodsInfo);
+        if(StringUtils.isEmpty(goods))
+            return HttpResultUtil.error(301,"获取商品失败");
+        return HttpResultUtil.success(goods);
     }
 
+    /**
+     * 添加商品
+     * @param goods
+     * @return
+     */
     @GetMapping("addGoods")
     public HttpResult<String> addGoods(Goods goods){
-        HttpResult<String> result = new HttpResult<>();
-        if(goodsService.addGoods(goods)){
-            result.setCode(200);
-            result.setMsg("增加商品成功");
-        }else{
-            result.setCode(304);
-            result.setMsg("增加商品失败");
-        }
-        return result;
+        if(!goodsService.addGoods(goods))
+            return HttpResultUtil.error(303,"添加商品失败");
+        return HttpResultUtil.success("添加商品成功");
     }
 
+
+    /**
+     * 更新商品
+     * @param goods
+     * @return
+     */
     @GetMapping("updateGoods")
     public HttpResult<String> updateGoods(Goods goods){
-        HttpResult<String> result = new HttpResult<>();
-        if(goodsService.updateGoods(goods)){
-            result.setCode(200);
-            result.setMsg("更新商品成功");
-        }else{
-            result.setCode(304);
-            result.setMsg("更新商品失败");
-        }
-        return result;
+        if(!goodsService.updateGoods(goods))
+            return HttpResultUtil.error(304,"更新商品失败");
+        return HttpResultUtil.success("更新商品成功");
     }
 
+    /**
+     * 删除商品
+     * @param id
+     * @return
+     */
     @GetMapping("deleteGoods")
     public HttpResult<String> delete(int id){
-        HttpResult<String> result = new HttpResult<>();
-        if(goodsService.deleteGoods(id)){
-            result.setCode(200);
-            result.setMsg("删除商品成功");
-        }else{
-            result.setCode(304);
-            result.setMsg("删除商品失败");
-        }
-        return result;
+        if(!goodsService.deleteGoods(id))
+            return HttpResultUtil.error(303,"删除商品失败");
+        return HttpResultUtil.success("删除商品成功");
     }
 
+    /**
+     * 获得待审核的商品
+     * @param goodsInfo
+     * @return GoodsInfo
+     */
     @GetMapping("getVerGoods")
-    public HttpResult<GoodsInfo> del(GoodsInfo goodsInfo){
-        HttpResult<GoodsInfo> result = new HttpResult<>();
+    public HttpResult<GoodsInfo> getVerGoods(GoodsInfo goodsInfo){
         GoodsInfo goods=goodsService.getVerGoods(goodsInfo);
         if(StringUtils.isEmpty(goods))
             return HttpResultUtil.error(301, "获取审核商品失败");
-        result.setCode(200);
-        result.setData(goods);
-        result.setMsg("获取审核商品成功");
-        return result;
+        return HttpResultUtil.success(goods);
     }
 }

@@ -16,8 +16,8 @@
         insert into user values(null,#{username},#{password},#{name},#{email},#{phone},#{address})
     </insert>
 
-    <select id="getUserInfo" parameterType="User" resultType="User">
-        select * from user where uid=#{uid}
+    <select id="getUserInfo" resultType="User">
+        select * from user where rid=3 or rid=2
     </select>
 
     <select id="getRid" parameterType="Integer" resultType="Integer">

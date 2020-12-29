@@ -22,38 +22,44 @@ public class OrderController {
     @Autowired
     private IOrderService orderService;
 
+    /**
+     * 获取订单信息，商家和买家只能获得属于自己的订单
+     * @param request
+     * @param orders
+     * @return
+     */
     @GetMapping("getOrder")
-    public HttpResult<OrdersInfo> getOrderInfo(int uid, OrdersInfo orders){
-        HttpResult<OrdersInfo> result = new HttpResult<>();
-        if(!StringUtils.isEmpty(orderService.getOrderInfo(uid,orders))){
-            result.setCode(200);
-            result.setData(orderService.getOrderInfo(uid,orders));
-            result.setMsg("请求成功");
-        }else{
-            result.setCode(304);
-            result.setMsg("请求失败");
-        }
-        return result;
+    public HttpResult<OrdersInfo> getOrderInfo(HttpServletRequest request, OrdersInfo orders){
+        int uid=HttpContextUtil.getUid(request);
+        OrdersInfo ordersInfo=orderService.getOrderInfo(uid,orders);
+        if(StringUtils.isEmpty(ordersInfo))
+            return HttpResultUtil.error(301, "获取订单失败");
+        return HttpResultUtil.success(ordersInfo);
     }
 
+    /**
+     * 更新订单信息
+     * @param orders
+     * @return
+     */
     @GetMapping("updateOrder")
     public HttpResult<String> updateOrder(Orders orders){
         if(!orderService.updateOrder(orders))
-            HttpResultUtil.error(301, "更新订单失败");
+            return HttpResultUtil.error(301, "更新订单失败");
         return HttpResultUtil.success("更新订单成功");
     }
 
-
+    /**
+     * 查询订单，根据用户名查询
+     * @param username
+     * @param orInfo
+     * @return
+     */
     @GetMapping("searchOrder")
-    public  HttpResult<OrdersInfo> searchOrder(int rid,String username,OrdersInfo orInfo){//HttpServletRequest request
-        //int rid= HttpContextUtil.getUid(request);
-        if(rid!=1) HttpResultUtil.error(302, "无管理员权限");
+    public  HttpResult<OrdersInfo> searchOrder(String username,OrdersInfo orInfo){//
         OrdersInfo ordersInfo=orderService.searchOrder(username,orInfo);
         if(StringUtils.isEmpty(ordersInfo))
-            HttpResultUtil.error(301, "搜索订单失败");
-        HttpResult<OrdersInfo> result=new HttpResult<>();
-        result.setCode(200);
-        result.setData(ordersInfo);
-        return result;
+            return HttpResultUtil.error(301, "搜索订单失败");
+        return HttpResultUtil.success(ordersInfo);
     }
 }

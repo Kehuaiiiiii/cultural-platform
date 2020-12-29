@@ -10,8 +10,6 @@ import com.platform.service.IUserService;
 import com.platform.util.HttpContextUtil;
 import com.platform.util.HttpResultUtil;
 import com.platform.util.JwtUtil;
-import io.jsonwebtoken.Claims;
-import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,8 +17,6 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.xml.ws.spi.http.HttpContext;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -33,6 +29,11 @@ public class UserController {
     @Autowired
     private IUserService userService;
 
+    /**
+     * 用户登录，返回token，uid，rid
+     * @param request
+     * @return
+     */
     @PostMapping("login")
     public HttpResult<LoginResponse> Login(@RequestBody LoginRequest request) {
         // 参数检查
@@ -46,10 +47,8 @@ public class UserController {
         if (user == null) {
             return HttpResultUtil.error(301, "用户名或密码错误");
         }
-
         LoginResponse response = new LoginResponse();
         BeanUtils.copyProperties(user, response);
-
         Map<String, Object> tokenMap = new HashMap<>();
         tokenMap.put("rid", user.getRid());
         tokenMap.put("uid", user.getUid());
@@ -58,6 +57,11 @@ public class UserController {
         return HttpResultUtil.success(response);
     }
 
+    /**
+     * 获得菜单，根据rid获得菜单权限
+     * @param request
+     * @return
+     */
     @GetMapping("getMenu")
     public HttpResult<MenuResponse> getMenu(HttpServletRequest request) {
         int rid = HttpContextUtil.getRid(request);
@@ -71,11 +75,16 @@ public class UserController {
         return HttpResultUtil.success(response);
     }
 
-    @GetMapping("logout")
+  /*  @GetMapping("logout")
     public String Logout(HttpServletRequest request) {
         return "退出成功";
-    }
+    }*/
 
+    /**
+     * 添加用户
+     * @param user
+     * @return
+     */
     @GetMapping("addUser")
     public HttpResult<String> addAdmin(User user) {
         if (userService.addUser(user))
@@ -83,19 +92,29 @@ public class UserController {
         return HttpResultUtil.success("添加成功");
     }
 
+    /**
+     * 更新用户
+     * @param user
+     * @return
+     */
     @GetMapping("updateUser")
     public HttpResult<String> updateAdmin(User user) {
-
         if (userService.updateUser(user))
             return HttpResultUtil.error(301, "更新失败");
         return HttpResultUtil.success("更新成功");
     }
 
+    /**
+     * 获得用户信息
+     * @return
+     */
     @GetMapping("getUserInfo")
-    public User getAdminInfo(User user) {
-        //if (!StringUtils.isEmpty(userService.getUserInfo(user)))
-        //    return userService.getUserInfo(user);
-        return null;
+    public HttpResult<List<User>> getAdminInfo() {
+        HttpResult<List<User>> result=new HttpResult<>();
+        List<User> userList=userService.getUserInfo();
+        if (org.springframework.util.StringUtils.isEmpty(userList))
+            return HttpResultUtil.error(301, "获取用户信息失败");
+        return HttpResultUtil.success(userList);
     }
 
 

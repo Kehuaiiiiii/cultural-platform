@@ -40,8 +40,8 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
-    public User getUserInfo(User user) {
-        return userMapper.getUserInfo(user);
+    public List<User> getUserInfo() {
+        return userMapper.getUserInfo();
     }
 
 

@@ -13,7 +13,7 @@ public interface IUserService {
 
     Boolean updateUser(User user);
 
-    User getUserInfo(User user);
+    List<User> getUserInfo();
 
     List<Menu> getMenu(int rid);
 }

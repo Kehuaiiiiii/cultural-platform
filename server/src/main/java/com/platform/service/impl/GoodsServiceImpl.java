@@ -19,16 +19,18 @@ public class GoodsServiceImpl implements IGoodsService{
     private GoodsMapper goodsMapper;
 
     @Override
-    public GoodsInfo getGoods(GoodsInfo goods) {
+    public GoodsInfo getGoods(int uid,int rid,GoodsInfo goods) {
         int page=goods.getPagenum();
         int size=goods.getPagesize();
         int min=(page-1)*size;
         int max=page*size;
         String name=goods.getName();
-        goods.setTotal(goodsMapper.getTotal(name));
-        goods.setGoods(goodsMapper.getGoods(name,min,max));
+        goods.setTotal(goodsMapper.getTotal(uid,rid,name));
+        goods.setGoods(goodsMapper.getGoods(uid,rid,name,min,max));
         return goods;
     }
+
+
 
     @Override
     public Boolean addGoods(Goods goods) {
