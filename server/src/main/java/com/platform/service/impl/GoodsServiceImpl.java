@@ -23,7 +23,7 @@ public class GoodsServiceImpl implements IGoodsService{
         int page=goods.getPagenum();
         int size=goods.getPagesize();
         int min=(page-1)*size;
-        int max=page*size;
+        int max=size;
         String name=goods.getName();
         goods.setTotal(goodsMapper.getTotal(uid,rid,name));
         goods.setGoods(goodsMapper.getGoods(uid,rid,name,min,max));

@@ -21,12 +21,12 @@
       <!-- 表格数据 -->
       <el-table class="table" :data="goodsList" border stripe highlight-current-row>
         <el-table-column type="index" :resizable="false"></el-table-column>
-        <el-table-column label="商品名称" prop="goods_name" :resizable="false"></el-table-column>
-        <el-table-column label="商品价格(元)" prop="goods_price" width="140px" sortable :resizable="false"></el-table-column>
-        <el-table-column label="商品重量(克)" prop="goods_weight" width="140px" :resizable="false"></el-table-column>
-        <el-table-column label="数量" prop="goods_number" width="70px" :resizable="false"></el-table-column>
-        <el-table-column label="上架时间" prop="add_time" width="100px" :resizable="false">
-          <template slot-scope="scope">{{ scope.row.add_time | dataFormat }}</template>
+        <el-table-column label="商品名称" prop="name" :resizable="false"></el-table-column>
+        <el-table-column label="商品价格(元)" prop="price" width="140px" sortable :resizable="false"></el-table-column>
+        <el-table-column label="商品重量(克)" prop="weight" width="140px" :resizable="false"></el-table-column>
+        <el-table-column label="数量" prop="number" width="70px" :resizable="false"></el-table-column>
+        <el-table-column label="上架时间" prop="created_time" width="100px" :resizable="false">
+          <template slot-scope="scope">{{ scope.row.created_time | dateFormat }}</template>
         </el-table-column>
         <el-table-column label="操作" width="100px" :resizable="false">
           <template slot-scope="scope">
@@ -182,22 +182,10 @@ export default {
       queryInfo: {
         name: '',
         pagenum: 1,
-        pagesize: 10
+        pagesize: 5
       },
       // 商品列表
-      goodsList: [{
-        goods_name: 'abc',
-        goods_price: 200,
-        goods_weight: 10,
-        goods_number: 20,
-        add_time: '2020-12-24'
-      }, {
-        goods_name: 'abc',
-        goods_price: 100,
-        goods_weight: 5,
-        goods_number: 1,
-        add_time: '2020-11-24'
-      }],
+      goodsList: [],
       // 商品总数
       total: 0,
       // 添加商品对话框
@@ -254,7 +242,7 @@ export default {
   methods: {
     // 根据分页获取对应的商品列表
     async getSellingGoodsList() {
-      const {data: res} = await this.$http.get('goods/sell', {
+      const {data: res} = await this.$http.get('goods/getGoods', {
         params: this.queryInfo
       })
       if (res.code !== 200) {
@@ -286,7 +274,7 @@ export default {
         // console.log(valid)
         // 表单预校验失败
         if (!valid) return
-        const {data: res} = await this.$http.post('addGoods', this.addGoodsForm)
+        const {data: res} = await this.$http.get('goods/addGoods', this.addGoodsForm)
         if (res.code !== 200) {
           this.$message.error('添加失败！')
         }
@@ -301,11 +289,13 @@ export default {
     },
     async getGoodsInfo(id) {
       this.goodsDetailForm.name = '12345'
+      //todo
       console.log(id)
     },
     async updateGoodsInfo(id) {
       await this.getGoodsInfo(id)
       this.addGoodsForm = this.goodsDetailForm
+      // todo
       console.log(this.goodsDetailForm)
     },
     updateDialogClosed() {
@@ -314,6 +304,17 @@ export default {
     },
     updateGoods() {
       console.log(this.addGoodsForm)
+    }
+  },
+  filters: {
+    dateFormat: function(originVal) {
+      const dt = new Date(originVal)
+
+      const y = dt.getFullYear()
+      const m = (dt.getMonth() + 1 + '').padStart(2, '0')
+      const d = (dt.getDate() + '').padStart(2, '0')
+
+      return `${y}-${m}-${d}`
     }
   }
 }

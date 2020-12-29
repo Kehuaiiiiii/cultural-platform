@@ -30,7 +30,7 @@
             <el-table-column label="商品重量(kg)" prop="weight" width="140px" :resizable="false"></el-table-column>
             <el-table-column label="数量" prop="number" width="70px" :resizable="false"></el-table-column>
             <el-table-column label="上架时间" prop="created_time" width="100px" :resizable="false">
-              <template slot-scope="scope">{{ scope.row.created_time | dataFormat }}</template>
+              <template slot-scope="scope">{{ scope.row.created_time | dateFormat }}</template>
             </el-table-column>
             <el-table-column label="操作" width="100px" :resizable="false">
               <template slot-scope="scope">
@@ -141,25 +141,11 @@ export default {
       queryInfo: {
         name: '',
         pagenum: 1,
-        pagesize: 10
+        pagesize: 5
       },
       totol: 0,
       // 商品列表
-      goodsList: [{
-        id: 101,
-        name: 'abc',
-        price: 200,
-        weight: 10,
-        number: 20,
-        created_time: '2020-12-24'
-      }, {
-        id: 2,
-        name: 'abc',
-        price: 100,
-        weight: 5,
-        number: 1,
-        created_time: '2020-11-24'
-      }],
+      goodsList: [],
       // 商品详情对话框
       goodsDetailDialogVisible: false,
       // 商品详情表单
@@ -203,8 +189,16 @@ export default {
         // this.onlyTableData = res.data
       }
     },
-    getGoodsList() {
-
+    // 根据分页获取对应的商品列表
+    async getGoodsList () {
+      const { data: res } = await this.$http.get('goods/getGoods', {
+        params: this.queryInfo
+      })
+      if (res.code !== 200) {
+        return this.$message.error('获取商品列表失败！ 原因: ' + res.msg)
+      }
+      this.goodsList = res.data.goods
+      this.total = res.data.total
     },
     handleSizeChange(newSize) {
       this.queryInfo.pagesize = newSize
@@ -220,6 +214,7 @@ export default {
     },
     async getGoodsInfo(id) {
       this.goodsDetailDialogVisible = true
+      // todo
       this.goodsDetailForm.name = '12345'
       console.log(id)
     },
@@ -230,6 +225,10 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
+        const { data: res } = this.$http.get('goods/deleteGoods', id)
+        if (res.code !== 200) {
+          return this.$message.error('操作失败！ 原因: ' + res.msg)
+        }
         this.$message({
           type: 'success',
           message: '删除成功!'
@@ -239,6 +238,17 @@ export default {
     },
     async updateGoodsUseful(id) {
       console.log(id)
+    }
+  },
+  filters: {
+    dateFormat: function(originVal) {
+      const dt = new Date(originVal)
+
+      const y = dt.getFullYear()
+      const m = (dt.getMonth() + 1 + '').padStart(2, '0')
+      const d = (dt.getDate() + '').padStart(2, '0')
+
+      return `${y}-${m}-${d}`
     }
   }
 }
