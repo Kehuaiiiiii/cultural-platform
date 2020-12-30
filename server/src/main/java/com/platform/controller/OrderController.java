@@ -38,28 +38,52 @@ public class OrderController {
     }
 
     /**
-     * 更新订单信息
+     * 更新订单 发货状态
      * @param orders
      * @return
      */
-    @GetMapping("updateOrder")
+    @GetMapping("updOrderSend")
     public HttpResult<String> updateOrder(Orders orders){
-        if(!orderService.updateOrder(orders))
+        if(!orderService.updOrderSend(orders))
+            return HttpResultUtil.error(301, "更新订单失败");
+        return HttpResultUtil.success("更新订单成功");
+    }
+
+    /**
+     * 更新订单 支付状态
+     * @param orders
+     * @return
+     */
+    @GetMapping("updOrderPay")
+    public HttpResult<String> update(Orders orders){
+        if(!orderService.updOrderPay(orders))
             return HttpResultUtil.error(301, "更新订单失败");
         return HttpResultUtil.success("更新订单成功");
     }
 
     /**
      * 查询订单，根据用户名查询
-     * @param username
+     * @param username pagenum pagesize
      * @param orInfo
      * @return
      */
     @GetMapping("searchOrder")
-    public  HttpResult<OrdersInfo> searchOrder(String username,OrdersInfo orInfo){//
+    public  HttpResult<OrdersInfo> searchOrder(String username,OrdersInfo orInfo){
         OrdersInfo ordersInfo=orderService.searchOrder(username,orInfo);
         if(StringUtils.isEmpty(ordersInfo))
             return HttpResultUtil.error(301, "搜索订单失败");
         return HttpResultUtil.success(ordersInfo);
+    }
+
+    /**
+     * 创建订单
+     * @param orders
+     * @return
+     */
+    @GetMapping("addOrder")
+    public  HttpResult<String> addOrder(Orders orders){
+        if(!orderService.addOrder(orders))
+            return HttpResultUtil.error(301, "添加订单失败");
+        return HttpResultUtil.success("添加订单成功");
     }
 }

@@ -7,9 +7,8 @@ import com.platform.service.IGoodsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.sql.Date;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
+import java.util.Date;
 
 
 @Service
@@ -34,9 +33,10 @@ public class GoodsServiceImpl implements IGoodsService{
 
     @Override
     public Boolean addGoods(Goods goods) {
-        String Nowtime=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Calendar.getInstance().getTime());
-        Date time=Date.valueOf(Nowtime);
-        goods.setCreated_time(time);
+        Date dt = new Date();
+        SimpleDateFormat sdf =   new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String currentTime = sdf.format(dt);
+        goods.setCreated_time(currentTime);
         return goodsMapper.addGoods(goods);
     }
 

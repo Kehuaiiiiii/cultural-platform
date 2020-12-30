@@ -5,9 +5,11 @@
 <mapper namespace="com.platform.mapper.GoodsMapper">
 
     <select id="getGoods"  resultType="Goods">
-        select * from goods where 1=1
-        <if test="rid==2">and uid=#{uid}</if>
-        <if test="name!=null||name!=''">and  name like "%${name}%"</if>
+        select goods.*,user.nickname from goods
+        left join user on goods.uid=user.uid
+        where 1=1
+        <if test="rid==2">and goods.uid=#{uid}</if>
+        <if test="name!=null||name!=''">and  goods.name like "%${name}%"</if>
         limit #{min},#{max}
     </select>
 
@@ -35,6 +37,8 @@
     </select>
 
     <select id="getVerGoods" parameterType="Integer" resultType="Goods">
-        select * from goods where status=0 limit #{min},#{max}
+        select goods.*,user.nickname from goods
+        left join user on goods.uid=user.uid
+        where goods.status=0 limit #{min},#{max}
     </select>
 </mapper>

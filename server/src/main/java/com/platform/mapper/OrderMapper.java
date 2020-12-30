@@ -9,7 +9,9 @@ import java.util.List;
 public interface OrderMapper {
     Boolean addOrder(Orders orders);
 
-    Boolean updateOrder(Orders orders);
+    Boolean updOrderSend(Orders orders);
+
+    Boolean updOrderPay(Orders orders);
 
     List<Orders> getOrders(@Param("uid") int uid, @Param("min")int min, @Param("max")int max);
 

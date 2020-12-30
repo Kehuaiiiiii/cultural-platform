@@ -8,6 +8,8 @@ import com.platform.service.IOrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -21,14 +23,31 @@ public class OrderServiceImpl implements IOrderService {
 
     @Override
     public Boolean addOrder(Orders orders) {
+        Date dt = new Date();
+        SimpleDateFormat sdf =   new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String currentTime = sdf.format(dt);
+        orders.setCreated_time(currentTime);
+        orders.setModified_time(currentTime);
         return orderMapper.addOrder(orders);
     }
 
     @Override
-    public Boolean updateOrder(Orders orders) {
-        return orderMapper.updateOrder(orders);
+    public Boolean updOrderSend(Orders orders) {
+        Date dt = new Date();
+        SimpleDateFormat sdf =   new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String currentTime = sdf.format(dt);
+        orders.setModified_time(currentTime);
+        return orderMapper.updOrderSend(orders);
     }
 
+    @Override
+    public Boolean updOrderPay(Orders orders) {
+        Date dt = new Date();
+        SimpleDateFormat sdf =   new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String currentTime = sdf.format(dt);
+        orders.setModified_time(currentTime);
+        return orderMapper.updOrderPay(orders);
+    }
 
     @Override
     public OrdersInfo getOrderInfo(int uid, OrdersInfo orders) {
