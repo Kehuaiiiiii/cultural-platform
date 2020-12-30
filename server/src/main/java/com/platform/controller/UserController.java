@@ -110,7 +110,6 @@ public class UserController {
      */
     @GetMapping("getUserInfo")
     public HttpResult<List<User>> getAdminInfo() {
-        HttpResult<List<User>> result=new HttpResult<>();
         List<User> userList=userService.getUserInfo();
         if (org.springframework.util.StringUtils.isEmpty(userList))
             return HttpResultUtil.error(301, "获取用户信息失败");
