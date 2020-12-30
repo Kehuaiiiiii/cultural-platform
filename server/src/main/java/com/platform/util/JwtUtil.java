@@ -44,7 +44,7 @@ public final class JwtUtil {
                     .parseClaimsJws(token)
                     .getBody();
         } catch (Exception e) {
-            e.printStackTrace();
+            System.err.println("jwt exception");
             return null;
         }
     }

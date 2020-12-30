@@ -66,8 +66,10 @@ export default {
         this.$message.success('登陆成功')
         // 保存token'
         window.sessionStorage.setItem('token', res.data.token);
+        // 保存name
+        window.sessionStorage.setItem('nickname', res.data.nickname);
         // 跳转到/home
-        this.$router.push({path:"/home", param:{username: res.data.username}})
+        this.$router.push('/home')
       });
     }
   }
