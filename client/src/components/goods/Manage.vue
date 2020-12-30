@@ -214,9 +214,15 @@ export default {
     },
     async getGoodsInfo(id) {
       this.goodsDetailDialogVisible = true
-      // todo
-      this.goodsDetailForm.name = '12345'
       console.log(id)
+      let self = this
+      this.goodsList.forEach(function (item) {
+        if(item.id === id) {
+          self.goodsDetailForm = item
+          console.log(item)
+          return
+        }
+      })
     },
     async deleteGoods(id) {
       console.log(id)

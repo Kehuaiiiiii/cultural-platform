@@ -180,6 +180,7 @@ export default {
   },
   created () {
     this.getGoodsList()
+    console.log(this.$route)
   },
   methods: {
     // 根据分页获取对应的商品列表
@@ -208,10 +209,10 @@ export default {
     getGoodsInfo(id) {
       this.goodsDetailDialogVisible = true
       console.log(id)
-      console.log(this.goodsDetailForm)
+      let self = this
       this.goodsList.forEach(function (item) {
         if(item.id === id) {
-          this.goodsDetailForm.name = item.name
+          self.goodsDetailForm = item
           console.log(item)
           return
         }
@@ -231,8 +232,15 @@ export default {
     async createOrder(buyForm) {
       this.$refs.buyGoodsFormRef.validate(async valid => {
         if (!valid) return
+        //todo 创建订单
+        const {data: res} = await this.$http.get('order/add', this.addGoodsForm)
+        if (res.code !== 200) {
+          this.$message.error('购买失败！')
+          return
+        }
+        this.$message.success('下单成功！')
         this.buyGoodsDialogVisible = false
-        console.log(buyForm)
+        await this.getSellingGoodsList()
       })
     },
   },

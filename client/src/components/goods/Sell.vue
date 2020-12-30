@@ -277,6 +277,7 @@ export default {
         const {data: res} = await this.$http.get('goods/addGoods', this.addGoodsForm)
         if (res.code !== 200) {
           this.$message.error('添加失败！')
+          return
         }
         this.$message.success('添加商品成功！')
         this.addDialogVisible = false
@@ -288,21 +289,34 @@ export default {
       this.$refs.goodsDetailFormRef.resetFields()
     },
     async getGoodsInfo(id) {
-      this.goodsDetailForm.name = '12345'
-      //todo
+      this.goodsDetailDialogVisible = true
       console.log(id)
+      let self = this
+      this.goodsList.forEach(function (item) {
+        if(item.id === id) {
+          self.goodsDetailForm = item
+          console.log(item)
+          return
+        }
+      })
     },
     async updateGoodsInfo(id) {
-      await this.getGoodsInfo(id)
-      this.addGoodsForm = this.goodsDetailForm
-      // todo
-      console.log(this.goodsDetailForm)
+      console.log(id)
+      let self = this
+      this.goodsList.forEach(function (item) {
+        if(item.id === id) {
+          self.addGoodsForm = item
+          console.log(item)
+          return
+        }
+      })
     },
     updateDialogClosed() {
       this.$refs.goodsDetailFormRef.resetFields()
       this.$refs.addGoodsFormRef.resetFields()
     },
     updateGoods() {
+      // todo
       console.log(this.addGoodsForm)
     }
   },
