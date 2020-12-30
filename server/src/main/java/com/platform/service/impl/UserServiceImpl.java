@@ -31,7 +31,9 @@ public class UserServiceImpl implements IUserService {
 
     @Override
     public Boolean addUser(User user) {
-        return userMapper.addUser(user);
+        Integer res = userMapper.addUser(user);
+        System.out.println(res);
+        return res > 0;
     }
 
     @Override
@@ -40,8 +42,10 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
-    public List<User> getUserInfo() {
-        return userMapper.getUserInfo();
+    public List<User> getUserInfo(String username, int pagenum, int pagesize) {
+        int offset = (pagenum - 1) * pagesize;
+        int size = pagesize;
+        return userMapper.getUserInfo(username, offset, size);
     }
 
 
@@ -71,5 +75,10 @@ public class UserServiceImpl implements IUserService {
         }
         return menus;
 
+    }
+
+    @Override
+    public Integer getTotal(String username) {
+        return userMapper.getTotal(username);
     }
 }

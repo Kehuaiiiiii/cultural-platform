@@ -12,7 +12,7 @@
         <el-row :gutter="20">
           <el-col :span="6">
             <el-input placeholder="请输入用户名" v-model="queryInfo.name" clearable @clear="getUserList">
-              <el-button slot="append" icon="el-icon-search" @click="getUserList"></el-button>
+              <el-button slot="append" icon="el-icon-search" @click="queryInfo.pagenum=1;getUserList()"></el-button>
             </el-input>
           </el-col>
           <el-col :span="4">
@@ -26,6 +26,7 @@
         <el-table-column type="index" :resizable="false"></el-table-column>
         <el-table-column label="uid" prop="uid" width="200px" sortable></el-table-column>
         <el-table-column label="用户名" prop="username" sortable></el-table-column>
+        <el-table-column label="昵称" prop="nickname" width="300px" sortable></el-table-column>
         <el-table-column label="用户类型" prop="rid" :formatter="ridFormat" width="140px" sortable></el-table-column>
         <el-table-column label="操作" width="140px">
           <template slot-scope="scope">
@@ -57,7 +58,8 @@
       <!-- 内容主体 -->
       <el-form
         :model="userForm"
-        ref="userForm"
+        ref="userFormRef"
+        :rules="userFormRules"
         label-width="100px"
       >
         <el-form-item label="用户名" prop="username">
@@ -65,6 +67,9 @@
         </el-form-item>
         <el-form-item label="密码" prop="password">
           <el-input v-model="userForm.password" placeholder="仅支持英文、数字和下划线" oninput="value=value.replace(/[^\w]/g,'')"></el-input>
+        </el-form-item>
+        <el-form-item label="昵称" prop="nickname">
+          <el-input v-model="userForm.nickname"></el-input>
         </el-form-item>
         <el-form-item label="角色类型" prop="rid">
           <el-select v-model="userForm.rid" placeholder="请选择">
@@ -93,7 +98,7 @@ export default {
       queryInfo: {
         name: '',
         pagenum: 1,
-        pagesize: 10
+        pagesize: 5
       },
       totol: 0,
       ridMap: {
@@ -102,21 +107,14 @@ export default {
         3: '普通用户',
       },
       // 用户列表
-      userList: [{
-        uid: 101,
-        username: 'abc',
-        rid: 2,
-      }, {
-        uid: 2,
-        username: 'abc',
-        rid: 1,
-      }],
+      userList: [],
       // 添加用户对话框
       userDialogVisible: false,
       // 添加用户表单
       userForm: {
         username: '',
         password: '',
+        nickname: '',
         rid: '',
       },
       role: [{
@@ -128,15 +126,37 @@ export default {
       }, {
         value: '3',
         label: '普通用户'
-      }]
+      }],
+      userFormRules: {
+        // 验证用户名是否合法
+        username: [
+          {required: true, message: "请输入登录用户名", trigger: "blur"},
+          {min: 3, max: 15, message: "长度在3到15个字符中间", trigger: "blur"}
+        ],
+        // 验证密码是否合法
+        password: [
+          {required: true, message: "请输入登录密码", trigger: "blur"},
+          {min: 6, max: 15, message: "长度在6到15个字符中间", trigger: "blur"}
+        ],
+        nickname: [
+          {required: true, message: "请输入昵称", trigger: "blur"},
+        ]
+      }
     }
   },
   created() {
     this.getUserList()
   },
   methods: {
-    getUserList() {
-
+    async getUserList() {
+      const { data: res } = await this.$http.get('user/getUserInfo', {
+        params: this.queryInfo
+      })
+      if (res.code !== 200) {
+        return this.$message.error('获取用户列表失败！ 原因: ' + res.msg)
+      }
+      this.userList = res.data.userList
+      this.total = res.data.total
     },
     handleSizeChange(newSize) {
       this.queryInfo.pagesize = newSize
@@ -151,20 +171,34 @@ export default {
     },
     userDialogClosed() {
       this.userDialogVisible = false
-      this.$refs.userForm.resetFields()
+      this.$refs.userFormRef.resetFields()
     },
-    async deleteUser(id) {
-      console.log(id)
+    async deleteUser(uid) {
+      console.log(uid)
       this.$confirm('此操作将永久删除该用户, 是否继续?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
+        // 发送请求
+        const {data: res} = this.$http.get('user/deleteUser', {params: uid});
+        if (res.code !== 200) return this.$message.error('删除失败 原因: ' + res.msg);
         this.$message({
           type: 'success',
           message: '删除成功!'
         });
         this.getUserList()
+      });
+    },
+    async addUser() {
+      this.$refs.userFormRef.validate(async valid => {
+        if (!valid) return;
+        // 发送请求
+        const {data: res} = await this.$http.get('user/addUser', {params: this.userForm});
+        if (res.code !== 200) return this.$message.error('添加失败 原因: ' + res.msg);
+        this.$message.success('添加成功')
+        await this.getUserList()
+        this.userDialogClosed()
       });
     }
   }

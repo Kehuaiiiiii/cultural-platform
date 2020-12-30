@@ -17,7 +17,14 @@
     </insert>
 
     <select id="getUserInfo" resultType="User">
-        select * from user where rid=3 or rid=2
+        select * from user where 1=1
+        <if test="username!=null and username!=''">and  username like "%${username}%"</if>
+        limit #{offset},#{size}
+    </select>
+
+    <select id="getTotal" resultType="Integer">
+        select count(*) from user where 1=1
+        <if test="username!=null and username!=''">and username like "%${username}%"</if>
     </select>
 
     <select id="getRid" parameterType="Integer" resultType="Integer">

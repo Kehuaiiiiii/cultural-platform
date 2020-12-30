@@ -11,7 +11,7 @@
       <el-row :gutter="20">
         <el-col :span="6">
           <el-input placeholder="请输入内容" v-model="queryInfo.name" clearable @clear="getGoodsList">
-            <el-button slot="append" icon="el-icon-search" @click="getGoodsList"></el-button>
+            <el-button slot="append" icon="el-icon-search" @click="queryInfo.pagenum=1;getGoodsList()"></el-button>
           </el-input>
         </el-col>
       </el-row>

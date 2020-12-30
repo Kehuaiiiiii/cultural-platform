@@ -11,7 +11,7 @@
       <el-row :gutter="20">
         <el-col :span="6">
           <el-input placeholder="请输入内容" v-model="queryInfo.name" clearable @clear="getSellingGoodsList">
-            <el-button slot="append" icon="el-icon-search" @click="getSellingGoodsList"></el-button>
+            <el-button slot="append" icon="el-icon-search" @click="queryInfo.pagenum=1;getSellingGoodsList()"></el-button>
           </el-input>
         </el-col>
         <el-col :span="4">
@@ -281,6 +281,7 @@ export default {
         }
         this.$message.success('添加商品成功！')
         this.addDialogVisible = false
+        this.$refs.addGoodsFormRef.resetFields()
         await this.getSellingGoodsList()
       })
     },
