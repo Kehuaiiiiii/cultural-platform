@@ -9,11 +9,13 @@ public interface UserMapper{
 
     User login(@Param("username") String username, @Param("password") String password);
 
-    Boolean addUser(User user);
+    Integer addUser(User user);
 
     Boolean updateUser(User user);
 
-    List<User> getUserInfo();
+    List<User> getUserInfo(@Param("username") String username, @Param("offset") int offset, @Param("size") int size);
+
+    int getTotal(@Param("username") String username);
 
     Integer getRid(int uid);
 

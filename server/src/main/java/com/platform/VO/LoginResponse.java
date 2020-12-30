@@ -12,4 +12,6 @@ public class LoginResponse {
     private int rid;
 
     private String token;
+
+    private String nickname;
 }

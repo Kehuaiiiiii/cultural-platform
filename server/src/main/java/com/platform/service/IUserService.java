@@ -13,7 +13,9 @@ public interface IUserService {
 
     Boolean updateUser(User user);
 
-    List<User> getUserInfo();
+    List<User> getUserInfo(String username, int pagenum, int pagesize);
 
     List<Menu> getMenu(int rid);
+
+    Integer getTotal(String username);
 }

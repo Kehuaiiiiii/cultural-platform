@@ -1,10 +1,7 @@
 package com.platform.controller;
 
-import com.platform.VO.HttpResult;
-import com.platform.VO.LoginRequest;
-import com.platform.VO.LoginResponse;
+import com.platform.VO.*;
 import com.platform.DAO.*;
-import com.platform.VO.MenuResponse;
 import com.platform.constant.HttpError;
 import com.platform.service.IUserService;
 import com.platform.util.HttpContextUtil;
@@ -31,6 +28,7 @@ public class UserController {
 
     /**
      * 用户登录，返回token，uid，rid
+     *
      * @param request
      * @return
      */
@@ -59,6 +57,7 @@ public class UserController {
 
     /**
      * 获得菜单，根据rid获得菜单权限
+     *
      * @param request
      * @return
      */
@@ -82,23 +81,25 @@ public class UserController {
 
     /**
      * 添加用户
+     *
      * @param user
      * @return
      */
     @GetMapping("addUser")
-    public HttpResult<String> addAdmin(User user) {
-        if (userService.addUser(user))
-            return HttpResultUtil.error(301, "添加失败");
+    public HttpResult<String> addUser(User user) {
+        if (!userService.addUser(user))
+            return HttpResultUtil.error(301, "系统错误");
         return HttpResultUtil.success("添加成功");
     }
 
     /**
      * 更新用户
+     *
      * @param user
      * @return
      */
     @GetMapping("updateUser")
-    public HttpResult<String> updateAdmin(User user) {
+    public HttpResult<String> updateUser(User user) {
         if (userService.updateUser(user))
             return HttpResultUtil.error(301, "更新失败");
         return HttpResultUtil.success("更新成功");
@@ -106,14 +107,17 @@ public class UserController {
 
     /**
      * 获得用户信息
+     *
      * @return
      */
     @GetMapping("getUserInfo")
-    public HttpResult<List<User>> getAdminInfo() {
-        List<User> userList=userService.getUserInfo();
-        if (org.springframework.util.StringUtils.isEmpty(userList))
-            return HttpResultUtil.error(301, "获取用户信息失败");
-        return HttpResultUtil.success(userList);
+    public HttpResult<GetUserInfoResponse> getUserInfo(GetUserInfoRequest request) {
+        Integer total = userService.getTotal(request.getName());
+        List<User> userList = userService.getUserInfo(request.getName(), request.getPagenum(), request.getPagesize());
+        GetUserInfoResponse response = new GetUserInfoResponse();
+        response.setTotal(total);
+        response.setUserList(userList);
+        return HttpResultUtil.success(response);
     }
 
 
