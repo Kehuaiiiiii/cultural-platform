@@ -37,17 +37,23 @@ public class GoodsServiceImpl implements IGoodsService{
         SimpleDateFormat sdf =   new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String currentTime = sdf.format(dt);
         goods.setCreated_time(currentTime);
-        return goodsMapper.addGoods(goods);
+        Integer res = goodsMapper.addGoods(goods);
+        System.out.println("增加了："+res+" 条记录");
+        return res > 0;
     }
 
     @Override
     public Boolean updateGoods(Goods goods) {
-        return goodsMapper.updateGoods(goods);
+        Integer res = goodsMapper.updateGoods(goods);
+        System.out.println("更新了："+res+" 条记录");
+        return res > 0;
     }
 
     @Override
     public Boolean deleteGoods(int id) {
-        return goodsMapper.deleteGoods(id);
+        Integer res = goodsMapper.deleteGoods(id);
+        System.out.println("删除了："+res+" 条记录");
+        return res > 0;
     }
 
     @Override

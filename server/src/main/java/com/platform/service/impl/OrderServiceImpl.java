@@ -28,7 +28,9 @@ public class OrderServiceImpl implements IOrderService {
         String currentTime = sdf.format(dt);
         orders.setCreated_time(currentTime);
         orders.setModified_time(currentTime);
-        return orderMapper.addOrder(orders);
+        Integer res = orderMapper.addOrder(orders);
+        System.out.println("增加了："+res+" 条记录");
+        return res > 0;
     }
 
     @Override
@@ -37,7 +39,9 @@ public class OrderServiceImpl implements IOrderService {
         SimpleDateFormat sdf =   new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String currentTime = sdf.format(dt);
         orders.setModified_time(currentTime);
-        return orderMapper.updOrderSend(orders);
+        Integer res = orderMapper.updOrderSend(orders);
+        System.out.println("更新了："+res+" 条记录");
+        return res > 0;
     }
 
     @Override
@@ -46,7 +50,9 @@ public class OrderServiceImpl implements IOrderService {
         SimpleDateFormat sdf =   new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String currentTime = sdf.format(dt);
         orders.setModified_time(currentTime);
-        return orderMapper.updOrderPay(orders);
+        Integer res = orderMapper.updOrderPay(orders);
+        System.out.println("更新了："+res+" 条记录");
+        return res > 0;
     }
 
     @Override
@@ -76,6 +82,13 @@ public class OrderServiceImpl implements IOrderService {
         ordersInfo.setOrders(orderMapper.getOrdAdmin(list,min,max));
         ordersInfo.setTotal(orderMapper.getTotalAdmin(list));
         return ordersInfo;
+    }
+
+    @Override
+    public boolean deleteOrder(int id) {
+        Integer res = orderMapper.deleteOrder(id);
+        System.out.println("删除了："+res+" 条记录");
+        return res > 0;
     }
 
 }

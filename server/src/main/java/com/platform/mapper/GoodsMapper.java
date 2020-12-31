@@ -13,11 +13,11 @@ public interface GoodsMapper {
 
     int getTotal(@Param("uid")int uid,@Param("rid") int rid, @Param("name") String name);
 
-    Boolean addGoods(Goods goods);
+    Integer addGoods(Goods goods);
 
-    Boolean updateGoods(Goods goods);
+    Integer updateGoods(Goods goods);
 
-    Boolean deleteGoods(int id);
+    Integer deleteGoods(int id);
 
     List<Goods> getVerGoods(@Param("min")int min,@Param("max")int max);
 

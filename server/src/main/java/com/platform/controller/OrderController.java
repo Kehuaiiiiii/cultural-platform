@@ -86,4 +86,16 @@ public class OrderController {
             return HttpResultUtil.error(301, "添加订单失败");
         return HttpResultUtil.success("添加订单成功");
     }
+
+    /**
+     * 删除订单
+     * @param id
+     * @return
+     */
+    @GetMapping("deleteOrder")
+    public HttpResult<String> deleteOrder(int id){
+        if(!orderService.deleteOrder(id))
+            return HttpResultUtil.error(301, "删除订单失败");
+        return HttpResultUtil.success("删除订单成功");
+    }
 }

@@ -7,11 +7,11 @@ import org.apache.ibatis.annotations.Param;
 import java.util.List;
 
 public interface OrderMapper {
-    Boolean addOrder(Orders orders);
+    Integer addOrder(Orders orders);
 
-    Boolean updOrderSend(Orders orders);
+    Integer updOrderSend(Orders orders);
 
-    Boolean updOrderPay(Orders orders);
+    Integer updOrderPay(Orders orders);
 
     List<Orders> getOrders(@Param("uid") int uid, @Param("min")int min, @Param("max")int max);
 
@@ -24,4 +24,6 @@ public interface OrderMapper {
     List<Orders> getOrdAdmin(@Param("list") List<Integer> list , @Param("min") int min , @Param("max") int max);
 
     int getTotalAdmin(@Param("list")List<Integer> list);
+
+    Integer deleteOrder(int id);
 }

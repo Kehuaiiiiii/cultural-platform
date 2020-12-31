@@ -14,4 +14,6 @@ public interface IOrderService {
     OrdersInfo getOrderInfo(int uid, OrdersInfo ordersInfo);
 
     OrdersInfo searchOrder(String username,OrdersInfo ordersInfo);
+
+    boolean deleteOrder(int id);
 }
