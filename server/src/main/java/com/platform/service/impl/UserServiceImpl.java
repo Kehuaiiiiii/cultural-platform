@@ -32,7 +32,7 @@ public class UserServiceImpl implements IUserService {
     @Override
     public Boolean addUser(User user) {
         Integer res = userMapper.addUser(user);
-        System.out.println(res);
+        System.out.println("添加了："+res+" 条记录");
         return res > 0;
     }
 
@@ -80,5 +80,12 @@ public class UserServiceImpl implements IUserService {
     @Override
     public Integer getTotal(String username) {
         return userMapper.getTotal(username);
+    }
+
+    @Override
+    public Boolean deleteUser(int uid) {
+        Integer res = userMapper.deleteUser(uid);
+        System.out.println("删除了："+res+" 条记录");
+        return res > 0;
     }
 }

@@ -20,4 +20,7 @@ public interface UserMapper{
     Integer getRid(int uid);
 
     List<Integer> getUid(@Param("username") String username);
+
+    Integer deleteUser(int uid);
+
 }

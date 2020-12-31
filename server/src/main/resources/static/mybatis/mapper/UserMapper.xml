@@ -16,6 +16,9 @@
         insert into user values(null,#{username},#{password},#{rid},#{nickname})
     </insert>
 
+    <delete id="deleteUser" parameterType="Integer" >
+        delete from user where uid=#{uid}
+    </delete>
     <select id="getUserInfo" resultType="User">
         select * from user where 1=1
         <if test="username!=null and username!=''">and  username like "%${username}%"</if>

@@ -105,6 +105,19 @@ public class UserController {
         return HttpResultUtil.success("更新成功");
     }
 
+
+    /**
+     * 删除用户
+     * @param uid
+     * @return
+     */
+    @GetMapping("deleteUser")
+    public HttpResult<String> deleteUser(int uid) {
+        if (userService.deleteUser(uid))
+            return HttpResultUtil.error(302, "删除失败");
+        return HttpResultUtil.success("删除成功");
+    }
+
     /**
      * 获得用户信息
      *
@@ -119,6 +132,5 @@ public class UserController {
         response.setUserList(userList);
         return HttpResultUtil.success(response);
     }
-
 
 }

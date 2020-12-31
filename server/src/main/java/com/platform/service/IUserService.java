@@ -18,4 +18,6 @@ public interface IUserService {
     List<Menu> getMenu(int rid);
 
     Integer getTotal(String username);
+
+    Boolean deleteUser(int uid);
 }

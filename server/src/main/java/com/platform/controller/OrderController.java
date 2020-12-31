@@ -45,8 +45,8 @@ public class OrderController {
     @GetMapping("updOrderSend")
     public HttpResult<String> updateOrder(Orders orders){
         if(!orderService.updOrderSend(orders))
-            return HttpResultUtil.error(301, "更新订单失败");
-        return HttpResultUtil.success("更新订单成功");
+            return HttpResultUtil.error(301, "更新订单发货状态失败");
+        return HttpResultUtil.success("更新订单发货状态成功");
     }
 
     /**
@@ -57,8 +57,8 @@ public class OrderController {
     @GetMapping("updOrderPay")
     public HttpResult<String> update(Orders orders){
         if(!orderService.updOrderPay(orders))
-            return HttpResultUtil.error(301, "更新订单失败");
-        return HttpResultUtil.success("更新订单成功");
+            return HttpResultUtil.error(301, "更新订单支付状态失败");
+        return HttpResultUtil.success("更新订单支付状态成功");
     }
 
     /**
