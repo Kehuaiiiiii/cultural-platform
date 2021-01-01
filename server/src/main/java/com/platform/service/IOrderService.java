@@ -3,6 +3,7 @@ package com.platform.service;
 
 import com.platform.DAO.Orders;
 import com.platform.DAO.OrdersInfo;
+import com.platform.VO.GetOrderInfoResponse;
 
 public interface IOrderService {
     Boolean addOrder(Orders orders);
@@ -11,7 +12,7 @@ public interface IOrderService {
 
     Boolean updOrderPay(Orders orders);
 
-    OrdersInfo getOrderInfo(int uid, OrdersInfo ordersInfo);
+    GetOrderInfoResponse getOrderInfo(int uid, int pagenum, int pagesize);
 
     OrdersInfo searchOrder(String username,OrdersInfo ordersInfo);
 

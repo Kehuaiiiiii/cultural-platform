@@ -41,4 +41,10 @@
         left join user on goods.uid=user.uid
         where goods.status=0 limit #{min},#{max}
     </select>
+
+    <select id="getGoodsById" parameterType="Integer" resultType="Goods">
+        select * from goods
+        where id = #{id}
+    </select>
+
 </mapper>

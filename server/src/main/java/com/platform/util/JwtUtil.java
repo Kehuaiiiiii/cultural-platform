@@ -22,8 +22,8 @@ public final class JwtUtil {
         if (Objects.isNull(map)) {
             map = new HashMap<>();
         }
-        long expire = 15 * 60;
-        Date expireDate = new Date(System.currentTimeMillis() + expire * 1000); // 过期时间设为15分钟
+        long expire = 120 * 60;
+        Date expireDate = new Date(System.currentTimeMillis() + expire * 1000); // 过期时间设为120分钟
         return Jwts.builder()
                 .setHeaderParam("typ", "JWT")   // 设置头部信息
                 .setClaims(map)                 // 装入自定义的用户信息
@@ -44,7 +44,7 @@ public final class JwtUtil {
                     .parseClaimsJws(token)
                     .getBody();
         } catch (Exception e) {
-            System.err.println("jwt exception");
+            System.err.println("jwt exception, may be expire");
             return null;
         }
     }

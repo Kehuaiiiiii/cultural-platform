@@ -23,6 +23,7 @@ public class JwtInterceptor implements Filter {
     @Override
     public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain) throws IOException, ServletException {
         HttpServletRequest request = (HttpServletRequest) req;
+        HttpServletResponse response = (HttpServletResponse) res;
         String token = request.getHeader(JwtUtil.getHeaderKey());
         if (!StringUtils.isBlank(token)) {
             // 校验并解析token，如果token过期或者篡改，则会返回null
@@ -31,6 +32,8 @@ public class JwtInterceptor implements Filter {
                 // 校验通过后，设置用户信息到request里，在controller中从request域中获取用户信息
                 request.setAttribute(JwtConst.UID_KEY, claims.get("uid"));
                 request.setAttribute(JwtConst.RID_KEY, claims.get("rid"));
+            } else {
+                response.setStatus(404);
             }
         }
         System.out.println("JwtInterceptor");

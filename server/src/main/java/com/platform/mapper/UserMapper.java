@@ -23,4 +23,6 @@ public interface UserMapper{
 
     Integer deleteUser(int uid);
 
+    User getUserById(@Param("uid") int uid);
+
 }
