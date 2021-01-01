@@ -112,8 +112,8 @@ public class UserController {
      * @return
      */
     @GetMapping("deleteUser")
-    public HttpResult<String> deleteUser(int uid) {
-        if (userService.deleteUser(uid))
+    public HttpResult<String> deleteUser(Integer uid) {
+        if (!userService.deleteUser(uid))
             return HttpResultUtil.error(302, "删除失败");
         return HttpResultUtil.success("删除成功");
     }

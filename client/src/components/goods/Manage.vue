@@ -59,7 +59,7 @@
             <el-table-column label="商品重量(kg)" prop="weight" width="140px" :resizable="false"></el-table-column>
             <el-table-column label="数量" prop="number" width="70px" :resizable="false"></el-table-column>
             <el-table-column label="上架时间" prop="created_time" width="100px" :resizable="false">
-              <template slot-scope="scope">{{ scope.row.created_time | dataFormat }}</template>
+              <template slot-scope="scope">{{ scope.row.created_time | dateFormat }}</template>
             </el-table-column>
             <el-table-column label="操作" width="100px" :resizable="false">
               <template slot-scope="scope">
@@ -143,7 +143,7 @@ export default {
         pagenum: 1,
         pagesize: 5
       },
-      totol: 0,
+      total: 0,
       // 商品列表
       goodsList: [],
       // 商品详情对话框
@@ -157,10 +157,11 @@ export default {
         introduce: '',
         url: '',
       },
+      updateGoodsRequest: {},
     }
   },
   created() {
-    // this.getCateList()
+    this.getGoodsList()
   },
   computed: {
     getTitleText() {
@@ -176,22 +177,25 @@ export default {
       this.getParamsData()
     },
     async getParamsData() {
-      //   根据所选分类的Id,和当前面板的参数, 获取对应的参数
-      // const { data: res } = await this.$http.get(
-      //   `categories/${this.getCateId}/attributes`,
-      //   {
-      //     params: { sel: this.activeTabsName }
-      //   }
-      // )
       if (this.activeTabsName === 'manage') {
-        // this.manyTableData = res.data
+        await this.getGoodsList()
       } else {
-        // this.onlyTableData = res.data
+        await this.getVerGoods()
       }
     },
     // 根据分页获取对应的商品列表
     async getGoodsList () {
       const { data: res } = await this.$http.get('goods/getGoods', {
+        params: this.queryInfo
+      })
+      if (res.code !== 200) {
+        return this.$message.error('获取商品列表失败！ 原因: ' + res.msg)
+      }
+      this.goodsList = res.data.goods
+      this.total = res.data.total
+    },
+    async getVerGoods() {
+      const { data: res } = await this.$http.get('goods/getVerGoods', {
         params: this.queryInfo
       })
       if (res.code !== 200) {
@@ -230,8 +234,8 @@ export default {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
-      }).then(() => {
-        const { data: res } = this.$http.get('goods/deleteGoods', id)
+      }).then(async () => {
+        const { data: res } = await this.$http.get('goods/deleteGoods', id)
         if (res.code !== 200) {
           return this.$message.error('操作失败！ 原因: ' + res.msg)
         }
@@ -239,11 +243,34 @@ export default {
           type: 'success',
           message: '删除成功!'
         });
-        this.getGoodsList()
-      });
+      }).catch();
+      await this.getGoodsList()
     },
     async updateGoodsUseful(id) {
       console.log(id)
+      this.$confirm('确定上架该商品吗?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(async () => {
+        let self = this
+        this.goodsList.forEach(function (item) {
+          if(item.id === id) {
+            self.updateGoodsRequest = item
+            self.updateGoodsRequest.status = 1
+            return
+          }
+        })
+        const { data: res } = await this.$http.get('goods/updateGoods', {params: this.updateGoodsRequest})
+        if (res.code !== 200) {
+          return this.$message.error('操作失败！ 原因: ' + res.msg)
+        }
+        this.$message({
+          type: 'success',
+          message: '上架成功!'
+        });
+        await this.getVerGoods()
+      }).catch();
     }
   },
   filters: {

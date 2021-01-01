@@ -63,10 +63,12 @@
         label-width="100px"
       >
         <el-form-item label="用户名" prop="username">
-          <el-input v-model="userForm.username" placeholder="仅支持英文、数字和下划线" oninput="value=value.replace(/[^\w]/g,'')"></el-input>
+          <el-input v-model="userForm.username" placeholder="仅支持英文、数字和下划线"
+                    oninput="value=value.replace(/[^\w]/g,'')"></el-input>
         </el-form-item>
         <el-form-item label="密码" prop="password">
-          <el-input v-model="userForm.password" placeholder="仅支持英文、数字和下划线" oninput="value=value.replace(/[^\w]/g,'')"></el-input>
+          <el-input v-model="userForm.password" placeholder="仅支持英文、数字和下划线"
+                    oninput="value=value.replace(/[^\w]/g,'')"></el-input>
         </el-form-item>
         <el-form-item label="昵称" prop="nickname">
           <el-input v-model="userForm.nickname"></el-input>
@@ -100,7 +102,7 @@ export default {
         pagenum: 1,
         pagesize: 5
       },
-      totol: 0,
+      total: 0,
       ridMap: {
         1: '管理员',
         2: '卖家',
@@ -141,6 +143,9 @@ export default {
         nickname: [
           {required: true, message: "请输入昵称", trigger: "blur"},
         ]
+      },
+      deleteRequest: {
+        uid: 0
       }
     }
   },
@@ -149,7 +154,7 @@ export default {
   },
   methods: {
     async getUserList() {
-      const { data: res } = await this.$http.get('user/getUserInfo', {
+      const {data: res} = await this.$http.get('user/getUserInfo', {
         params: this.queryInfo
       })
       if (res.code !== 200) {
@@ -175,19 +180,21 @@ export default {
     },
     async deleteUser(uid) {
       console.log(uid)
+      let self = this
       this.$confirm('此操作将永久删除该用户, 是否继续?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
-      }).then(() => {
+      }).then(async () => {
         // 发送请求
-        const {data: res} = this.$http.get('user/deleteUser', {params: uid});
-        if (res.code !== 200) return this.$message.error('删除失败 原因: ' + res.msg);
+        self.deleteRequest.uid = uid
+        const {data: res} = await this.$http.get('user/deleteUser', {params: self.deleteRequest});
+        if (res.code !== 200) return this.$message.error('删除失败');
         this.$message({
           type: 'success',
           message: '删除成功!'
         });
-        this.getUserList()
+        await this.getUserList()
       });
     },
     async addUser() {

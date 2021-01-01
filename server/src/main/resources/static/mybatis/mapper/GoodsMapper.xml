@@ -7,14 +7,14 @@
     <select id="getGoods"  resultType="Goods">
         select goods.*,user.nickname from goods
         left join user on goods.uid=user.uid
-        where 1=1
+        where status=1
         <if test="rid==2">and goods.uid=#{uid}</if>
         <if test="name!=null||name!=''">and  goods.name like "%${name}%"</if>
         limit #{min},#{max}
     </select>
 
     <select id="getTotal" resultType="Integer">
-        select count(*) from goods where 1=1
+        select count(*) from goods where status=1
         <if test="rid==2">and uid=#{uid}</if>
         <if test="name!=null||name!=''">and name like "%${name}%"</if>
     </select>
@@ -25,7 +25,7 @@
 
     <update id="updateGoods" parameterType="Goods">
         update goods set name=#{name},price=#{price},
-        number=#{number},weight=#{weight},introduce=#{introduce},url=#{url},created_time=#{created_time} where id=#{id}
+        number=#{number},weight=#{weight},introduce=#{introduce},url=#{url},status=#{status},created_time=#{created_time} where id=#{id}
     </update>
 
     <delete id="deleteGoods" parameterType="Integer">
