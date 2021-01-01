@@ -22,4 +22,6 @@ public interface GoodsMapper {
     List<Goods> getVerGoods(@Param("min")int min,@Param("max")int max);
 
     int getVerTotal();
+
+    Goods getGoodsById(@Param("id") int id);
 }

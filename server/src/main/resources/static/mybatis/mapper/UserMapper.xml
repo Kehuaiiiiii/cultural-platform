@@ -38,4 +38,8 @@
         select uid from user where username like "%${username}%"
     </select>
 
+    <select id="getUserById" parameterType="Integer" resultType="User">
+        select * from user where uid = #{uid}
+    </select>
+
 </mapper>
