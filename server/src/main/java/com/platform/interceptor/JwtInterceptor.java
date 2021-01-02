@@ -25,7 +25,7 @@ public class JwtInterceptor implements Filter {
         HttpServletRequest request = (HttpServletRequest) req;
         HttpServletResponse response = (HttpServletResponse) res;
         String token = request.getHeader(JwtUtil.getHeaderKey());
-        if (!StringUtils.isBlank(token)) {
+        if (!StringUtils.isEmpty(token) && !token.equals("null")) {
             // 校验并解析token，如果token过期或者篡改，则会返回null
             Claims claims = JwtUtil.verifyAndGetClaimsByToken(token);
             if (claims != null) {

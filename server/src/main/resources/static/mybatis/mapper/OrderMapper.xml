@@ -9,11 +9,11 @@
     </insert>
 
     <update id="updOrderPay" parameterType="Orders">
-        update orders set pay_status=#{pay_status} and modified_time=#{modified_time} where id=#{id}
+        update orders set pay_status=#{pay_status} where id=#{id}
     </update>
 
     <update id="updOrderSend" parameterType="Orders">
-        update orders set send_status=#{send_status} and modified_time=#{modified_time} where id=#{id}
+        update orders set send_status=#{send_status} where id=#{id}
     </update>
 
     <select id="getAllOrders" parameterType="Integer" resultType="Orders">
