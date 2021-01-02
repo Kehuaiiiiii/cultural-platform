@@ -6,8 +6,10 @@
         <img src="../assets/logo.png" alt/>
         <span>南京文创平台-订单管理系统</span>
       </div>
-      <span>欢迎回来，{{this.nickname}}</span>
-      <el-button type="info" @click="logout">退出</el-button>
+      <div>
+        <span class="welcome">欢迎回来，{{this.nickname}}</span>
+        <el-button type="info" @click="logout">退出</el-button>
+      </div>
     </el-header>
     <!-- 主体 -->
     <el-container>
@@ -127,6 +129,10 @@ export default {
 .head {
   display: flex;
   align-items: center;
+}
+
+.welcome {
+  margin-right: 50px;
 }
 
 img {

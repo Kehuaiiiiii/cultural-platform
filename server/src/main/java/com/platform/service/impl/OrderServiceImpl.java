@@ -45,10 +45,6 @@ public class OrderServiceImpl implements IOrderService {
 
     @Override
     public Boolean updOrderSend(Orders orders) {
-        Date dt = new Date();
-        SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        String currentTime = sdf.format(dt);
-        orders.setModified_time(currentTime);
         Integer res = orderMapper.updOrderSend(orders);
         System.out.println("更新了：" + res + " 条记录");
         return res > 0;
@@ -56,10 +52,6 @@ public class OrderServiceImpl implements IOrderService {
 
     @Override
     public Boolean updOrderPay(Orders orders) {
-        Date dt = new Date();
-        SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        String currentTime = sdf.format(dt);
-        orders.setModified_time(currentTime);
         Integer res = orderMapper.updOrderPay(orders);
         System.out.println("更新了：" + res + " 条记录");
         return res > 0;

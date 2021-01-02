@@ -8,13 +8,13 @@
     </el-breadcrumb>
     <!-- 卡片视图 -->
     <el-card>
-<!--      <el-row :gutter="20">-->
-<!--        <el-col :span="6">-->
-<!--          <el-input placeholder="请输入内容" v-model="queryInfo.name" clearable @clear="getOrderList">-->
-<!--            <el-button slot="append" icon="el-icon-search" @click="queryInfo.pagenum=1;getOrderList()"></el-button>-->
-<!--          </el-input>-->
-<!--        </el-col>-->
-<!--      </el-row>-->
+      <!--      <el-row :gutter="20">-->
+      <!--        <el-col :span="6">-->
+      <!--          <el-input placeholder="请输入内容" v-model="queryInfo.name" clearable @clear="getOrderList">-->
+      <!--            <el-button slot="append" icon="el-icon-search" @click="queryInfo.pagenum=1;getOrderList()"></el-button>-->
+      <!--          </el-input>-->
+      <!--        </el-col>-->
+      <!--      </el-row>-->
       <!-- 表格数据 -->
       <el-table class="table" :data="orderList" border highlight-current-row :row-class-name="tableRowClassName">
         <el-table-column type="index" :resizable="false"></el-table-column>
@@ -27,16 +27,13 @@
         <el-table-column label="下单时间" prop="created_time" width="100px" :resizable="false" sortable>
           <template slot-scope="scope">{{scope.row.created_time | dateFormat }}</template>
         </el-table-column>
-<!--        <el-table-column label="买家名称" prop="buyer_name" width="140px" :resizable="false"></el-table-column>-->
-        <el-table-column label="卖家名称" prop="seller_name" width="140px" :resizable="false"></el-table-column>
+        <el-table-column label="买家名称" prop="buyer_name" width="140px" :resizable="false"></el-table-column>
+<!--        <el-table-column label="卖家名称" prop="seller_name" width="140px" :resizable="false"></el-table-column>-->
 
         <el-table-column label="操作" width="100px" :resizable="false">
           <template slot-scope="scope">
-            <el-tooltip class="tooltip" effect="dark" content="支付订单" placement="top">
-              <el-button type="primary" icon="el-icon-money" size="small" @click="payOrder(scope.row.id)" circle></el-button>
-            </el-tooltip>
-            <el-tooltip class="tooltip" effect="dark" content="确认收货" placement="top">
-              <el-button type="success" icon="el-icon-check" size="small" @click="receiveOrder(scope.row.id)" circle></el-button>
+            <el-tooltip class="tooltip" effect="dark" content="确认发货" placement="top">
+              <el-button type="success" icon="el-icon-check" size="small" @click="updateOrder(scope.row.id)" circle></el-button>
             </el-tooltip>
           </template>
         </el-table-column>
@@ -114,22 +111,10 @@ export default {
     sendStatusFormat(row, column, cellValue, index) {
       return this.sendStatusMap[cellValue]
     },
-    tableRowClassName({row, rowIndex}) {
-      if (row.pay_status === 1 && row.send_status === 2) {
-        return 'success-row';
-      } else if (row.pay_status === 0) {
-        return 'warning-row';
-      }
-      return '';
-    },
-    payOrder(id) {
+    updateOrder(id) {
       console.log(id)
-      const vx = require("../../assets/vx_pay.png");
-      const zfb = require("../../assets/zfb_pay.png");
-      this.$confirm("<img src=" + vx + " width=190px height=200px style='margin-right:10px'/>" +
-        "<img src=" + zfb + " width=190px height=200px/>", '支付', {
-        dangerouslyUseHTMLString: true,
-        confirmButtonText: '我已支付完成',
+      this.$confirm('确定发货？', '发货确认', {
+        confirmButtonText: '确定',
         cancelButtonText: '取消',
       }).then(async () => {
         let order = null
@@ -146,67 +131,21 @@ export default {
           });
           return
         }
-        if (order.pay_status === 1) {
+        if (order.send_status === 1) {
           this.$message({
             type: 'warning',
-            message: '您已完成支付，无需重复提交'
-          });
-          return
-        }
-        order.pay_status = 1
-        const { data: res } = await this.$http.get('orders/updOrderPay', {
-          params: order
-        })
-        if (res.code !== 200) {
-          return this.$message.error('支付失败！ 原因: ' + res.msg)
-        }
-        this.$message({
-          type: 'success',
-          message: '支付成功!'
-        });
-        await this.getOrderList()
-      }).catch(() => {
-        this.$message({
-          type: 'info',
-          message: '取消支付'
-        });
-      });
-    },
-    receiveOrder(id) {
-      console.log(id)
-      this.$confirm('确定收货？', '收货确认', {
-        confirmButtonText: '完成收货',
-        cancelButtonText: '取消',
-      }).then(async () => {
-        let order = null
-        this.orderList.forEach(function (item) {
-          if(item.id === id) {
-            order = item
-            return
-          }
-        })
-        if (order == null) {
-          this.$message({
-            type: 'error',
-            message: '系统错误'
-          });
-          return
-        }
-        if (order.send_status === 0) {
-          this.$message({
-            type: 'warning',
-            message: '卖家尚未发货，无法收货'
+            message: '您已完成发货，无需重复操作'
           });
           return
         }
         if (order.send_status === 2) {
           this.$message({
             type: 'warning',
-            message: '您已完成交易，无需重复操作'
+            message: '该订单已完成，无需重复操作'
           });
           return
         }
-        order.send_status = 2
+        order.send_status = 1
         const { data: res } = await this.$http.get('orders/updOrderSend', {
           params: order
         })
@@ -215,7 +154,7 @@ export default {
         }
         this.$message({
           type: 'success',
-          message: '收货完成!'
+          message: '操作成功!'
         });
         await this.getOrderList()
       }).catch(() => {
@@ -224,6 +163,14 @@ export default {
           message: '取消操作'
         });
       });
+    },
+    tableRowClassName({row, rowIndex}) {
+      if (row.pay_status === 1 && row.send_status === 2) {
+        return 'success-row';
+      } else if (row.send_status === 0) {
+        return 'warning-row';
+      }
+      return '';
     },
   },
   filters: {

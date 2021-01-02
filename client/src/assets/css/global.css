@@ -33,3 +33,11 @@ html,body,#app{
 .ql-editor{
   min-height: 300px;
 }
+
+.el-table .warning-row {
+  background: oldlace;
+}
+
+.el-table .success-row {
+  background: #f0f9eb;
+}

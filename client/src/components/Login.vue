@@ -50,6 +50,9 @@ export default {
       }
     }
   },
+  created() {
+    window.sessionStorage.removeItem('token');
+  },
   methods: {
     // 重置
     resetLoginForm() {
