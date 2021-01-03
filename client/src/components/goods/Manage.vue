@@ -27,7 +27,7 @@
             <el-table-column type="index" :resizable="false"></el-table-column>
             <el-table-column label="商品名称" prop="name" :resizable="false"></el-table-column>
             <el-table-column label="商品价格(元)" prop="price" width="140px" sortable :resizable="false"></el-table-column>
-            <el-table-column label="商品重量(kg)" prop="weight" width="140px" :resizable="false"></el-table-column>
+            <el-table-column label="商品重量(g)" prop="weight" width="140px" :resizable="false"></el-table-column>
             <el-table-column label="数量" prop="number" width="70px" :resizable="false"></el-table-column>
             <el-table-column label="上架时间" prop="created_time" width="100px" :resizable="false">
               <template slot-scope="scope">{{ scope.row.created_time | dateFormat }}</template>
@@ -56,7 +56,7 @@
             <el-table-column type="index" :resizable="false"></el-table-column>
             <el-table-column label="商品名称" prop="name" :resizable="false"></el-table-column>
             <el-table-column label="商品价格(元)" prop="price" width="140px" sortable :resizable="false"></el-table-column>
-            <el-table-column label="商品重量(kg)" prop="weight" width="140px" :resizable="false"></el-table-column>
+            <el-table-column label="商品重量(g)" prop="weight" width="140px" :resizable="false"></el-table-column>
             <el-table-column label="数量" prop="number" width="70px" :resizable="false"></el-table-column>
             <el-table-column label="上架时间" prop="created_time" width="100px" :resizable="false">
               <template slot-scope="scope">{{ scope.row.created_time | dateFormat }}</template>
