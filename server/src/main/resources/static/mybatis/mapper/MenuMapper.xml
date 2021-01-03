@@ -5,5 +5,6 @@
 <mapper namespace="com.platform.mapper.MenuMapper">
     <select id="getMenu" parameterType="Integer" resultType="Menu">
         select * from menu where rid=#{rid}
+        order by id
     </select>
 </mapper>

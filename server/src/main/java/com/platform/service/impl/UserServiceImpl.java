@@ -10,10 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class UserServiceImpl implements IUserService {
@@ -73,6 +70,12 @@ public class UserServiceImpl implements IUserService {
         for (Menu value : map.values()) {
             menus.add(value);
         }
+        Collections.sort(menus, new Comparator<Menu>() {
+            @Override
+            public int compare(Menu o1, Menu o2) {
+                return o1.getId() - o2.getId();
+            }
+        });
         return menus;
 
     }

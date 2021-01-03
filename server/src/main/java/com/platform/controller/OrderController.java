@@ -34,7 +34,7 @@ public class OrderController {
     @GetMapping("getOrder")
     public HttpResult<GetOrderInfoResponse> getOrderInfo(HttpServletRequest request, GetOrderInfoRequest orders) {
         int uid = HttpContextUtil.getUid(request);
-        GetOrderInfoResponse result = orderService.getOrderInfo(uid, orders.getPagenum(), orders.getPagesize());
+        GetOrderInfoResponse result = orderService.getOrderInfo(uid, orders);
         if (result == null)
             return HttpResultUtil.error(301, "获取订单失败");
         return HttpResultUtil.success(result);

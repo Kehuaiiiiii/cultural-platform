@@ -177,6 +177,7 @@ export default {
       this.getParamsData()
     },
     async getParamsData() {
+      this.queryInfo.pagenum = 1
       if (this.activeTabsName === 'manage') {
         await this.getGoodsList()
       } else {

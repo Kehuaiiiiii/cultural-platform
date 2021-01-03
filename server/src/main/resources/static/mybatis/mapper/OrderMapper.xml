@@ -17,19 +17,31 @@
     </update>
 
     <select id="getAllOrders" parameterType="Integer" resultType="Orders">
-        select * from orders limit #{min},#{max}
+        select * from orders where 1=1
+        <if test="uid!=null">and (buyer_id = #{uid} or seller_id = #{uid} )</if>
+        <if test="payStatus!=null">and pay_status = #{payStatus}</if>
+        <if test="sendStatus!=null">and send_status = #{sendStatus}</if>
+        limit #{min},#{max}
     </select>
 
     <select id="getOrders" parameterType="Integer" resultType="Orders">
-        select * from orders where buyer_id=#{uid} or seller_id=#{uid} limit #{min},#{max}
+        select * from orders where (buyer_id=#{uid} or seller_id=#{uid})
+        <if test="payStatus!=null">and pay_status = #{payStatus}</if>
+        <if test="sendStatus!=null">and send_status = #{sendStatus}</if>
+        limit #{min},#{max}
     </select>
 
     <select id="getAllTotal" resultType="Integer">
-        select count(*) from orders
+        select count(*) from orders where 1=1
+        <if test="uid!=null">and (buyer_id = #{uid} or seller_id = #{uid} )</if>
+        <if test="payStatus!=null">and pay_status = #{payStatus}</if>
+        <if test="sendStatus!=null">and send_status = #{sendStatus}</if>
     </select>
 
     <select id="getTotal" parameterType="Orders" resultType="Integer">
-        select count(*) from orders where buyer_id=#{uid} or seller_id=#{uid}
+        select count(*) from orders where (buyer_id=#{uid} or seller_id=#{uid})
+        <if test="payStatus!=null">and pay_status = #{payStatus}</if>
+        <if test="sendStatus!=null">and send_status = #{sendStatus}</if>
     </select>
 
     <select id="getOrdAdmin"  resultType="Orders">

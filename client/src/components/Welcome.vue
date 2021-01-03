@@ -6,12 +6,13 @@
           <span>开发组成员：</span>
           <ul>
             <li><i class="el-icon-user-solid"></i>B17070214 叶科淮</li>
-            <li><i class="el-icon-user-solid"></i>。。。。。。。</li>
+            <li><i class="el-icon-user-solid"></i>B17040316 孙超</li>
+            <li><i class="el-icon-user-solid"></i>B17040326 周宇</li>
+            <li><i class="el-icon-user-solid"></i>Q17010210 包兴达</li>
+            <li><i class="el-icon-user-solid"></i>B17040307 丁泽海</li>
+            <li><i class="el-icon-user-solid"></i>B16040323 沙茂龙</li>
           </ul>
         </div>
-      </el-col>
-      <el-col :span="6">
-        <p>欢迎一起学习讨论</p>
       </el-col>
     </el-row>
   </div>

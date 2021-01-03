@@ -8,35 +8,57 @@
     </el-breadcrumb>
     <!-- 卡片视图 -->
     <el-card>
-<!--      <el-row :gutter="20">-->
-<!--        <el-col :span="6">-->
-<!--          <el-input placeholder="请输入内容" v-model="queryInfo.name" clearable @clear="getOrderList">-->
-<!--            <el-button slot="append" icon="el-icon-search" @click="queryInfo.pagenum=1;getOrderList()"></el-button>-->
-<!--          </el-input>-->
-<!--        </el-col>-->
-<!--      </el-row>-->
+      <el-row :gutter="20">
+        <el-col :span="3">
+          <el-select v-model="queryInfo.payStatus" placeholder="支付状态" clearable>
+            <el-option
+              v-for="item in queryPayStatusParams"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value">
+            </el-option>
+          </el-select>
+        </el-col>
+        <el-col :span="3">
+          <el-select v-model="queryInfo.sendStatus" placeholder="物流状态" clearable>
+            <el-option
+              v-for="item in querySendStatusParams"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value">
+            </el-option>
+          </el-select>
+        </el-col>
+        <el-col :span="2">
+          <el-button icon="el-icon-search" @click="queryInfo.pagenum=1;getOrderList()"></el-button>
+        </el-col>
+      </el-row>
       <!-- 表格数据 -->
       <el-table class="table" :data="orderList" border highlight-current-row :row-class-name="tableRowClassName">
         <el-table-column type="index" :resizable="false"></el-table-column>
         <el-table-column label="商品名称" prop="goods_name" :resizable="false"></el-table-column>
         <el-table-column label="商品单价(元)" prop="goods_price" width="140px" sortable :resizable="false"></el-table-column>
-        <el-table-column label="购买数量" prop="goods_number" width="70px" :resizable="false" sortable></el-table-column>
+        <el-table-column label="购买数量" prop="goods_number" width="120px" :resizable="false" sortable></el-table-column>
         <el-table-column label="总计金额(元)" prop="order_price" width="140px" :resizable="false" sortable></el-table-column>
-        <el-table-column label="支付状态" prop="pay_status" :formatter="payStatusFormat" width="140px" :resizable="false" sortable></el-table-column>
-        <el-table-column label="物流状态" prop="send_status" :formatter="sendStatusFormat" width="140px" :resizable="false" sortable></el-table-column>
-        <el-table-column label="下单时间" prop="created_time" width="100px" :resizable="false" sortable>
-          <template slot-scope="scope">{{scope.row.created_time | dateFormat }}</template>
+        <el-table-column label="支付状态" prop="pay_status" :formatter="payStatusFormat" width="120px" :resizable="false"
+                         sortable></el-table-column>
+        <el-table-column label="物流状态" prop="send_status" :formatter="sendStatusFormat" width="120px" :resizable="false"
+                         sortable></el-table-column>
+        <el-table-column label="下单时间" prop="created_time" width="140px" :resizable="false" sortable>
+          <template slot-scope="scope">{{ scope.row.created_time | dateFormat }}</template>
         </el-table-column>
-<!--        <el-table-column label="买家名称" prop="buyer_name" width="140px" :resizable="false"></el-table-column>-->
+        <!--        <el-table-column label="买家名称" prop="buyer_name" width="140px" :resizable="false"></el-table-column>-->
         <el-table-column label="卖家名称" prop="seller_name" width="140px" :resizable="false"></el-table-column>
 
         <el-table-column label="操作" width="100px" :resizable="false">
           <template slot-scope="scope">
             <el-tooltip class="tooltip" effect="dark" content="支付订单" placement="top">
-              <el-button type="primary" icon="el-icon-money" size="small" @click="payOrder(scope.row.id)" circle></el-button>
+              <el-button type="primary" icon="el-icon-money" size="small" @click="payOrder(scope.row.id)"
+                         circle></el-button>
             </el-tooltip>
             <el-tooltip class="tooltip" effect="dark" content="确认收货" placement="top">
-              <el-button type="success" icon="el-icon-check" size="small" @click="receiveOrder(scope.row.id)" circle></el-button>
+              <el-button type="success" icon="el-icon-check" size="small" @click="receiveOrder(scope.row.id)"
+                         circle></el-button>
             </el-tooltip>
           </template>
         </el-table-column>
@@ -63,12 +85,31 @@
 <script>
 
 export default {
-  data () {
+  data() {
     return {
       queryInfo: {
         pagenum: 1,
-        pagesize: 5
+        pagesize: 5,
+        payStatus: null,
+        sendStatus: null,
       },
+      queryPayStatusParams: [{
+        value: 0,
+        label: '未支付'
+      }, {
+        value: 1,
+        label: '已支付'
+      }],
+      querySendStatusParams: [{
+        value: 0,
+        label: '未发货'
+      }, {
+        value: 1,
+        label: '已发货'
+      }, {
+        value: 2,
+        label: '已收货'
+      }],
       // 订单列表
       orderList: [],
       // 订单总数
@@ -85,13 +126,19 @@ export default {
 
     }
   },
-  created () {
+  created() {
     this.getOrderList()
   },
   methods: {
     // 根据分页获取对应的商品列表
-    async getOrderList () {
-      const { data: res } = await this.$http.get('orders/getOrder', {
+    async getOrderList() {
+      console.log(this.queryInfo)
+      if(this.queryInfo.payStatus === '')
+        this.queryInfo.payStatus = null
+      if(this.queryInfo.sendStatus === '')
+        this.queryInfo.sendStatus = null
+
+      const {data: res} = await this.$http.get('orders/getOrder', {
         params: this.queryInfo
       })
       if (res.code !== 200) {
@@ -100,11 +147,11 @@ export default {
       this.orderList = res.data.orderList
       this.total = res.data.total
     },
-    handleSizeChange (newSize) {
+    handleSizeChange(newSize) {
       this.queryInfo.pagesize = newSize
       this.getOrderList()
     },
-    handleCurrentChange (newSize) {
+    handleCurrentChange(newSize) {
       this.queryInfo.pagenum = newSize
       this.getOrderList()
     },
@@ -134,7 +181,7 @@ export default {
       }).then(async () => {
         let order = null
         this.orderList.forEach(function (item) {
-          if(item.id === id) {
+          if (item.id === id) {
             order = item
             return
           }
@@ -154,7 +201,7 @@ export default {
           return
         }
         order.pay_status = 1
-        const { data: res } = await this.$http.get('orders/updOrderPay', {
+        const {data: res} = await this.$http.get('orders/updOrderPay', {
           params: order
         })
         if (res.code !== 200) {
@@ -180,7 +227,7 @@ export default {
       }).then(async () => {
         let order = null
         this.orderList.forEach(function (item) {
-          if(item.id === id) {
+          if (item.id === id) {
             order = item
             return
           }
@@ -207,7 +254,7 @@ export default {
           return
         }
         order.send_status = 2
-        const { data: res } = await this.$http.get('orders/updOrderSend', {
+        const {data: res} = await this.$http.get('orders/updOrderSend', {
           params: order
         })
         if (res.code !== 200) {
@@ -227,7 +274,7 @@ export default {
     },
   },
   filters: {
-    dateFormat: function(originVal) {
+    dateFormat: function (originVal) {
       const dt = new Date(originVal)
 
       const y = dt.getFullYear()

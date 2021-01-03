@@ -10,6 +10,7 @@ const GoodsSell = () => import('../components/goods/Sell.vue')
 const GoodsManage = () => import('../components/goods/Manage.vue')
 const OrderList = () => import('../components/order/List.vue')
 const OrderSell = () => import('../components/order/Sell.vue')
+const OrderSearch = () => import('../components/order/Search.vue')
 const UserManage = () => import('../components/user/Manage')
 
 Vue.use(VueRouter)
@@ -29,6 +30,7 @@ const routes = [
       { path: '/order', component: OrderList },
       { path: '/order/list', component: OrderList },
       { path: '/order/sell', component: OrderSell },
+      { path: '/order/search', component: OrderSearch },
       { path: '/user/manage', component: UserManage },
     ] }
 

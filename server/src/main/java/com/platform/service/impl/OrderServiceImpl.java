@@ -5,14 +5,17 @@ import com.platform.DAO.Orders;
 import com.platform.DAO.OrdersInfo;
 import com.platform.DAO.User;
 import com.platform.DTO.OrderInfo;
+import com.platform.VO.GetOrderInfoRequest;
 import com.platform.VO.GetOrderInfoResponse;
 import com.platform.mapper.GoodsMapper;
 import com.platform.mapper.OrderMapper;
 import com.platform.mapper.UserMapper;
 import com.platform.service.IOrderService;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -58,20 +61,31 @@ public class OrderServiceImpl implements IOrderService {
     }
 
     @Override
-    public GetOrderInfoResponse getOrderInfo(int uid, int pagenum, int pagesize) {
-        int offset = (pagenum - 1) * pagesize;
-        int size = pagesize;
+    public GetOrderInfoResponse getOrderInfo(int uid, GetOrderInfoRequest request) {
+        Integer payStatus = request.getPayStatus();
+        Integer sendStatus = request.getSendStatus();
+        int offset = (request.getPagenum() - 1) * request.getPagesize();
+        int size = request.getPagesize();
         int rid = userMapper.getRid(uid);
         GetOrderInfoResponse result = new GetOrderInfoResponse();
         List<OrderInfo> orderInfos = new ArrayList<>();
         List<Orders> orders;
         if (rid > 1) {
-            result.setTotal(orderMapper.getTotal(uid));
-            orders = orderMapper.getOrders(uid, offset, size);
+            result.setTotal(orderMapper.getTotal(uid, payStatus, sendStatus));
+            orders = orderMapper.getOrders(uid, payStatus, sendStatus, offset, size);
 
         } else {
-            result.setTotal(orderMapper.getAllTotal());
-            orders = orderMapper.getAllOrders(offset, size);
+            User user = new User();
+            if(!StringUtils.isEmpty(request.getName())) {
+                List<User> userList = userMapper.getUserInfo(request.getName(), 0, 1);
+                if(CollectionUtils.isEmpty(userList)) {
+                    user.setUid(-1);
+                } else {
+                    user = userList.get(0);
+                }
+            }
+            result.setTotal(orderMapper.getAllTotal(user.getUid(), payStatus, sendStatus));
+            orders = orderMapper.getAllOrders(user.getUid(), payStatus, sendStatus, offset, size);
         }
         for (Orders order : orders) {
             Goods goods = goodsMapper.getGoodsById(order.getGoods_id());
