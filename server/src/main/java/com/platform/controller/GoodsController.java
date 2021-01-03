@@ -47,7 +47,9 @@ public class GoodsController {
      * @return
      */
     @GetMapping("addGoods")
-    public HttpResult<String> addGoods(Goods goods) {
+    public HttpResult<String> addGoods(HttpServletRequest request, Goods goods) {
+        int uid = HttpContextUtil.getUid(request);
+        goods.setUid(uid);
         if (!goodsService.addGoods(goods))
             return HttpResultUtil.error(303, "添加商品失败");
         return HttpResultUtil.success("添加商品成功");

@@ -1,14 +1,18 @@
 package com.platform.controller;
 
+import com.platform.DAO.Goods;
 import com.platform.DAO.Orders;
 import com.platform.DAO.OrdersInfo;
+import com.platform.VO.AddOrderRequest;
 import com.platform.VO.GetOrderInfoRequest;
 import com.platform.VO.GetOrderInfoResponse;
 import com.platform.VO.HttpResult;
+import com.platform.mapper.GoodsMapper;
 import com.platform.service.IOrderService;
 import com.platform.util.HttpContextUtil;
 import com.platform.util.HttpResultUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.annotation.Order;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,6 +27,9 @@ public class OrderController {
 
     @Autowired
     private IOrderService orderService;
+
+    @Autowired
+    private GoodsMapper goodsMapper;
 
     /**
      * 获取订单信息，商家和买家只能获得属于自己的订单
@@ -84,13 +91,25 @@ public class OrderController {
     /**
      * 创建订单
      *
-     * @param orders
-     * @return
      */
     @GetMapping("addOrder")
-    public HttpResult<String> addOrder(Orders orders) {
-        if (!orderService.addOrder(orders))
+    public HttpResult<String> addOrder(HttpServletRequest req, AddOrderRequest request) {
+        Orders order = new Orders();
+        int uid = HttpContextUtil.getUid(req);
+        order.setBuyer_id(uid);
+        order.setSeller_id(request.getUid());
+        order.setGoods_id(request.getId());
+        order.setAddress(request.getAddress());
+        order.setGoods_number(request.getNumber());
+        order.setOrder_price(request.getTotal());
+        order.setPay_status(0);
+        order.setSend_status(0);
+        if (!orderService.addOrder(order))
             return HttpResultUtil.error(301, "添加订单失败");
+        Integer goodsId = request.getId();
+        Goods goods = goodsMapper.getGoodsById(goodsId);
+        goods.setNumber(goods.getNumber() - request.getNumber());
+        goodsMapper.updateGoods(goods);
         return HttpResultUtil.success("添加订单成功");
     }
 

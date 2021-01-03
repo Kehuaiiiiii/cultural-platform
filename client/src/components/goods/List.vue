@@ -65,7 +65,7 @@
               <el-input v-model="goodsDetailForm.name" readonly></el-input>
             </el-form-item>
             <el-form-item label="价格(元)" prop="price">
-              <el-input-number v-model="goodsDetailForm.price" :min="0" :controls="false" :precision="2" readonly></el-input-number>
+              <el-input-number v-model="goodsDetailForm.price" :min="0" :controls="false" :precision="2" disabled></el-input-number>
             </el-form-item>
             <el-form-item label="数量" prop="number">
               <el-input v-model.number="goodsDetailForm.number" oninput ="value=value.replace(/[^0-9]/g,'')" readonly></el-input>
@@ -91,7 +91,7 @@
       <!-- 内容主体 -->
       <el-form
         :model="buyGoodsForm"
-        ref="buyGoodsForm"
+        ref="buyGoodsFormRef"
         :rules="buyGoodsFormRules"
         label-width="100px"
       >
@@ -106,16 +106,16 @@
             <el-form-item label="数量" prop="number">
               <el-input v-model.number="buyGoodsForm.number" oninput ="value=value.replace(/[^0-9]/g,'')" @input="calcTotal"></el-input>
             </el-form-item>
-            <el-form-item label="支付总计" prop="totol">
-              <el-input-number v-model="buyGoodsForm.totol" :min="0" :controls="false" :precision="2" disabled></el-input-number>
+            <el-form-item label="支付总计" prop="total">
+              <el-input-number v-model="buyGoodsForm.total" :min="0" :controls="false" :precision="2" disabled></el-input-number>
             </el-form-item>
           </el-col>
           <el-col :span="8">
             <el-image :src="buyGoodsForm.url" style="width:230px;height:230px;" alt="img"/>
           </el-col>
         </el-row>
-        <el-form-item label="收货地址" prop="weight">
-          <el-input v-model="buyGoodsForm.addr"></el-input>
+        <el-form-item label="收货地址" prop="address">
+          <el-input v-model="buyGoodsForm.address"></el-input>
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
@@ -159,9 +159,9 @@ export default {
         name: '',
         price: 0,
         number: 1,
-        addr: '',
+        address: '',
         url: '',
-        totol: '',
+        total: '',
       },
       // 表单验证规则
       buyGoodsFormRules: {
@@ -170,11 +170,11 @@ export default {
           {
             type: 'number',
             min: 1,
-            max: 99,
-            message: '数目超过限制',
+            message: '数目填写错误',
             trigger: 'blur'
           }
         ],
+        address: [{required: true, message: '请输入收货地址', trigger: "blur"},],
       },
     }
   },
@@ -219,28 +219,47 @@ export default {
       })
     },
     calcTotal() {
-      this.buyGoodsForm.totol = this.buyGoodsForm.number * this.buyGoodsForm.price
+      this.buyGoodsForm.total = this.buyGoodsForm.number * this.buyGoodsForm.price
     },
     buyGoodsDialogClosed() {
       this.goodsDetailDialogVisible = false
-      this.$refs.buyGoodsForm.resetFields()
+      this.$refs.buyGoodsFormRef.resetFields()
     },
     async buyGoods(id) {
-      this.buyGoodsDialogVisible = true
       console.log(id)
+      this.buyGoodsDialogVisible = true
+      let self = this
+      this.goodsList.forEach(function (item) {
+        if(item.id === id) {
+          self.buyGoodsForm = JSON.parse(JSON.stringify(item))
+          self.buyGoodsForm.number = null
+          console.log(item)
+          return
+        }
+      })
     },
     async createOrder(buyForm) {
       this.$refs.buyGoodsFormRef.validate(async valid => {
         if (!valid) return
-        //todo 创建订单
-        const {data: res} = await this.$http.get('order/add', this.addGoodsForm)
+        let goods
+        this.goodsList.forEach(function (item) {
+          if(item.id === buyForm.id) {
+            goods = JSON.parse(JSON.stringify(item))
+          }
+        })
+        if(this.buyGoodsForm.number > goods.number) {
+          this.$message.error('数量不足，购买失败！')
+          return
+        }
+        console.log(this.buyGoodsForm)
+        const {data: res} = await this.$http.get('orders/addOrder', {params: this.buyGoodsForm})
         if (res.code !== 200) {
           this.$message.error('购买失败！')
           return
         }
-        this.$message.success('下单成功！')
+        this.$message.success('下单成功！请前往【我的订单】完成付款')
         this.buyGoodsDialogVisible = false
-        await this.getSellingGoodsList()
+        await this.getGoodsList()
       })
     },
   },
