@@ -257,7 +257,10 @@ export default {
           this.$message.error('购买失败！')
           return
         }
-        this.$message.success('下单成功！请前往【我的订单】完成付款')
+        this.$notify({
+          title: '下单成功！请前往【我的订单】完成付款',
+          type: 'success'
+        })
         this.buyGoodsDialogVisible = false
         await this.getGoodsList()
       })

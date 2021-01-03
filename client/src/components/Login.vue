@@ -32,8 +32,8 @@ export default {
     return {
       // 登陆表单的数据绑定对象
       loginForm: {
-        username: 'admin',
-        password: '123456',
+        username: '',
+        password: '',
       },
       // 这是表单的验证规则对象
       loginFormRules: {
@@ -52,6 +52,11 @@ export default {
   },
   created() {
     window.sessionStorage.removeItem('token');
+    this.$notify({
+      title: '提示',
+      message: '管理员账号: admin 密码: 123456',
+      type: 'success'
+    });
   },
   methods: {
     // 重置

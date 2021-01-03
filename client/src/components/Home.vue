@@ -86,6 +86,10 @@ export default {
     this.getMenuList()
     this.activePath = window.sessionStorage.getItem('activePath')
     this.nickname = window.sessionStorage.getItem('nickname')
+    this.$notify({
+      title: '欢迎回来，' + this.nickname,
+      type: 'success'
+    });
   },
   methods: {
     logout() {
