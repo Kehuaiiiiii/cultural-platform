@@ -110,7 +110,7 @@
               <el-input v-model="goodsDetailForm.name" readonly></el-input>
             </el-form-item>
             <el-form-item label="价格(元)" prop="price">
-              <el-input-number v-model="goodsDetailForm.price" :min="0" :controls="false" :precision="2" readonly></el-input-number>
+              <el-input-number v-model="goodsDetailForm.price" :min="0" :controls="false" :precision="2" disabled></el-input-number>
             </el-form-item>
             <el-form-item label="数量" prop="number">
               <el-input v-model.number="goodsDetailForm.number" oninput="value=value.replace(/[^0-9]/g,'')" readonly></el-input>
@@ -136,7 +136,7 @@
       <!-- 内容主体 -->
       <el-form
         :model="addGoodsForm"
-        ref="updateGoodsFormRef"
+        ref="addGoodsFormRef"
         :rules="addGoodsFormRules"
         label-width="100px"
       >
@@ -254,14 +254,15 @@ export default {
     },
     handleSizeChange(newSize) {
       this.queryInfo.pagesize = newSize
-      this.getGoodsList()
+      this.getSellingGoodsList()
     },
     handleCurrentChange(newSize) {
       this.queryInfo.pagenum = newSize
-      this.getGoodsList()
+      this.getSellingGoodsList()
     },
     // 监听 添加用户对话框的关闭事件
     addDialogClosed() {
+      this.addDialogVisible = false
       this.$refs.addGoodsFormRef.resetFields()
     },
     handleImgURL() {
@@ -274,14 +275,13 @@ export default {
         // console.log(valid)
         // 表单预校验失败
         if (!valid) return
-        const {data: res} = await this.$http.get('goods/addGoods', this.addGoodsForm)
+        const {data: res} = await this.$http.get('goods/addGoods', {params: this.addGoodsForm})
         if (res.code !== 200) {
           this.$message.error('添加失败！')
           return
         }
         this.$message.success('添加商品成功！')
-        this.addDialogVisible = false
-        this.$refs.addGoodsFormRef.resetFields()
+        await this.addDialogClosed()
         await this.getSellingGoodsList()
       })
     },
@@ -296,6 +296,7 @@ export default {
       this.goodsList.forEach(function (item) {
         if(item.id === id) {
           self.goodsDetailForm = item
+          self.url = self.goodsDetailForm.url
           console.log(item)
           return
         }
@@ -306,7 +307,8 @@ export default {
       let self = this
       this.goodsList.forEach(function (item) {
         if(item.id === id) {
-          self.addGoodsForm = item
+          self.addGoodsForm = JSON.parse(JSON.stringify(item))
+          self.url = self.addGoodsForm.url
           console.log(item)
           return
         }
@@ -317,8 +319,21 @@ export default {
       this.$refs.addGoodsFormRef.resetFields()
     },
     updateGoods() {
-      // todo
       console.log(this.addGoodsForm)
+      this.$refs.addGoodsFormRef.validate(async valid => {
+        // console.log(valid)
+        // 表单预校验失败
+        if (!valid) return
+        const {data: res} = await this.$http.get('goods/updateGoods', {params: this.addGoodsForm})
+        if (res.code !== 200) {
+          this.$message.error('更新失败！')
+          return
+        }
+        this.$message.success('更新成功！')
+        this.updateDialogVisible = false
+        this.$refs.addGoodsFormRef.resetFields()
+        await this.getSellingGoodsList()
+      })
     }
   },
   filters: {
