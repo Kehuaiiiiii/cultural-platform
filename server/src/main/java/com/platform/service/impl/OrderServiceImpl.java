@@ -115,7 +115,7 @@ public class OrderServiceImpl implements IOrderService {
         int page = ordersInfo.getPagenum();
         int size = ordersInfo.getPagesize();
         int min = (page - 1) * size;
-        int max = page * size;
+        int max = size;
         List<Integer> list = userMapper.getUid(username);
         ordersInfo.setOrders(orderMapper.getOrdAdmin(list, min, max));
         ordersInfo.setTotal(orderMapper.getTotalAdmin(list));

@@ -103,11 +103,6 @@ export default {
         pagesize: 5
       },
       total: 0,
-      ridMap: {
-        1: '管理员',
-        2: '卖家',
-        3: '普通用户',
-      },
       // 用户列表
       userList: [],
       // 添加用户对话框
@@ -146,7 +141,12 @@ export default {
       },
       deleteRequest: {
         uid: 0
-      }
+      },
+      ridMap: {
+        1: '管理员',
+        2: '卖家',
+        3: '普通用户',
+      },
     }
   },
   created() {
@@ -163,6 +163,9 @@ export default {
       this.userList = res.data.userList
       this.total = res.data.total
     },
+    ridFormat(row, column, cellValue, index) {
+      return this.ridMap[cellValue]
+    },
     handleSizeChange(newSize) {
       this.queryInfo.pagesize = newSize
       this.getUserList()
@@ -171,9 +174,7 @@ export default {
       this.queryInfo.pagenum = newSize
       this.getUserList()
     },
-    ridFormat(row, column, cellValue, index) {
-      return this.ridMap[cellValue]
-    },
+
     userDialogClosed() {
       this.userDialogVisible = false
       this.$refs.userFormRef.resetFields()
